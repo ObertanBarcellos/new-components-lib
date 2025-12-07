@@ -1163,7 +1163,7 @@ export function ComponentPageContent({ component }: ComponentPageContentProps) {
                             const fallbackChildren = fallbackComp?.children || "CN"
                             
                             return (
-                              <Component {...avatarProps}>
+                              <Components.Avatar {...avatarProps}>
                                 {hasImage && (
                                   <Components.AvatarImage 
                                     src={example.components.find(c => c.id === "AvatarImage")?.props?.src || "https://github.com/shadcn.png"} 
@@ -1173,7 +1173,7 @@ export function ComponentPageContent({ component }: ComponentPageContentProps) {
                                 <Components.AvatarFallback {...fallbackProps}>
                                   {fallbackChildren}
                                 </Components.AvatarFallback>
-                              </Component>
+                              </Components.Avatar>
                             )
                           })()
                         ) : (
