@@ -76,7 +76,7 @@ function Calendar({
 
   // Garantir que as variáveis CSS sejam definidas mesmo se não houver cores customizadas
   const defaultColorStyles = React.useMemo(() => {
-    const styles: React.CSSProperties = { ...colorStyles }
+    const styles: React.CSSProperties & Record<string, string> = { ...colorStyles }
     if (!primaryColor) {
       styles['--calendar-primary'] = 'hsl(var(--primary))'
       styles['--calendar-primary-text'] = 'hsl(var(--primary-foreground))'
