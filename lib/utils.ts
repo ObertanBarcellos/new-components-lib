@@ -155,3 +155,178 @@ export function getContrastTextColor(
   return isLightColor(backgroundColor) ? darkText : lightText
 }
 
+/**
+ * Converte uma cor hexadecimal para valores RGB
+ * @param hex - Cor em formato hexadecimal (#fff, #ffffff, ou fff, ffffff)
+ * @returns Objeto com valores r, g, b ou null se inválido
+ */
+export function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
+  return parseColor(hex)
+}
+
+/**
+ * Converte valores RGB para hexadecimal
+ * @param r - Valor de vermelho (0-255)
+ * @param g - Valor de verde (0-255)
+ * @param b - Valor de azul (0-255)
+ * @returns String hexadecimal no formato #RRGGBB
+ */
+export function rgbToHex(r: number, g: number, b: number): string {
+  const toHex = (n: number) => {
+    const hex = Math.round(Math.max(0, Math.min(255, n))).toString(16)
+    return hex.length === 1 ? "0" + hex : hex
+  }
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`
+}
+
+/**
+ * Formata valores RGBA como string
+ * @param r - Valor de vermelho (0-255)
+ * @param g - Valor de verde (0-255)
+ * @param b - Valor de azul (0-255)
+ * @param a - Valor de opacidade (0-1)
+ * @returns String no formato rgba(r, g, b, a)
+ */
+export function rgbaToString(r: number, g: number, b: number, a: number = 1): string {
+  const clampedA = Math.max(0, Math.min(1, a))
+  return `rgba(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)}, ${clampedA})`
+}
+
+/**
+ * Extrai valores RGBA de uma string de cor
+ * @param color - Cor em formato hex, rgb ou rgba
+ * @returns Objeto com valores r, g, b, a ou null se inválido
+ */
+export function parseRgba(color: string): { r: number; g: number; b: number; a: number } | null {
+  if (!color) return null
+
+  const trimmed = color.trim()
+
+  // Hex colors (#fff, #ffffff, #ffffffff)
+  if (trimmed.startsWith("#")) {
+    const hex = trimmed.slice(1)
+    let r = 0, g = 0, b = 0, a = 1
+
+    if (hex.length === 3) {
+      r = parseInt(hex[0] + hex[0], 16)
+      g = parseInt(hex[1] + hex[1], 16)
+      b = parseInt(hex[2] + hex[2], 16)
+    } else if (hex.length === 6) {
+      r = parseInt(hex.slice(0, 2), 16)
+      g = parseInt(hex.slice(2, 4), 16)
+      b = parseInt(hex.slice(4, 6), 16)
+    } else if (hex.length === 8) {
+      r = parseInt(hex.slice(0, 2), 16)
+      g = parseInt(hex.slice(2, 4), 16)
+      b = parseInt(hex.slice(4, 6), 16)
+      a = parseInt(hex.slice(6, 8), 16) / 255
+    } else {
+      return null
+    }
+
+    return { r, g, b, a }
+  }
+
+  // RGB/RGBA colors
+  const rgbaMatch = trimmed.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/)
+  if (rgbaMatch) {
+    return {
+      r: parseInt(rgbaMatch[1], 10),
+      g: parseInt(rgbaMatch[2], 10),
+      b: parseInt(rgbaMatch[3], 10),
+      a: rgbaMatch[4] ? parseFloat(rgbaMatch[4]) : 1,
+    }
+  }
+
+  // Fallback para parseColor
+  const rgb = parseColor(trimmed)
+  if (rgb) {
+    return { ...rgb, a: 1 }
+  }
+
+  return null
+}
+
+/**
+ * Converte RGB para HSL
+ * @param r - Valor de vermelho (0-255)
+ * @param g - Valor de verde (0-255)
+ * @param b - Valor de azul (0-255)
+ * @returns Objeto com valores h, s, l (0-360, 0-100, 0-100)
+ */
+export function rgbToHsl(r: number, g: number, b: number): { h: number; s: number; l: number } {
+  r /= 255
+  g /= 255
+  b /= 255
+
+  const max = Math.max(r, g, b)
+  const min = Math.min(r, g, b)
+  let h = 0
+  let s = 0
+  const l = (max + min) / 2
+
+  if (max !== min) {
+    const d = max - min
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
+
+    switch (max) {
+      case r:
+        h = ((g - b) / d + (g < b ? 6 : 0)) / 6
+        break
+      case g:
+        h = ((b - r) / d + 2) / 6
+        break
+      case b:
+        h = ((r - g) / d + 4) / 6
+        break
+    }
+  }
+
+  return {
+    h: Math.round(h * 360),
+    s: Math.round(s * 100),
+    l: Math.round(l * 100),
+  }
+}
+
+/**
+ * Converte HSL para RGB
+ * @param h - Matiz (0-360)
+ * @param s - Saturação (0-100)
+ * @param l - Luminosidade (0-100)
+ * @returns Objeto com valores r, g, b (0-255)
+ */
+export function hslToRgb(h: number, s: number, l: number): { r: number; g: number; b: number } {
+  h /= 360
+  s /= 100
+  l /= 100
+
+  let r = 0, g = 0, b = 0
+
+  if (s === 0) {
+    r = g = b = l
+  } else {
+    const hue2rgb = (p: number, q: number, t: number) => {
+      if (t < 0) t += 1
+      if (t > 1) t -= 1
+      if (t < 1 / 6) return p + (q - p) * 6 * t
+      if (t < 1 / 2) return q
+      if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6
+      return p
+    }
+
+    const q = l < 0.5 ? l * (1 + s) : l + s - l * s
+    const p = 2 * l - q
+
+    r = hue2rgb(p, q, h + 1 / 3)
+    g = hue2rgb(p, q, h)
+    b = hue2rgb(p, q, h - 1 / 3)
+  }
+
+  return {
+    r: Math.round(r * 255),
+    g: Math.round(g * 255),
+    b: Math.round(b * 255),
+  }
+}
+

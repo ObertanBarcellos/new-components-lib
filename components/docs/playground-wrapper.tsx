@@ -42,6 +42,7 @@ function getComponentId(componentName: string): string {
     "Calendar": "Calendar",
     "Date Picker": "DatePicker",
     "Avatar": "Avatar",
+    "ColorPicker": "ColorPicker",
   }
   return nameMap[componentName] || componentName.replace(/\s+/g, "")
 }
@@ -133,6 +134,7 @@ const componentMap: Record<string, any> = {
   ModalTitle: Components.ModalTitle,
   ModalDescription: Components.ModalDescription,
   ModalClose: Components.ModalClose,
+  ColorPicker: Components.ColorPicker,
 }
 
 function renderComponent(componentId: string, props: Record<string, any>, t: (key: string) => string): React.ReactNode {
@@ -562,6 +564,15 @@ function renderComponent(componentId: string, props: Record<string, any>, t: (ke
         </Components.BreadcrumbList>
       </Component>
     )
+  }
+
+  if (checkId === "ColorPicker") {
+    // ColorPicker precisa de estado para funcionar corretamente
+    const ColorPickerWithState = () => {
+      const [color, setColor] = React.useState(props.value || "#000000")
+      return <Component {...props} value={color} onChange={setColor} />
+    }
+    return <ColorPickerWithState />
   }
 
   return <Component {...props} />

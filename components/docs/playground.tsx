@@ -154,6 +154,10 @@ export function Playground({ component, renderComponent }: PlaygroundProps) {
                   if (p.name === "className") {
                     return component.name === "Skeleton"
                   }
+                  // Filtra props que são funções (onChange, etc)
+                  if (p.type.includes("=>") || p.type.includes("function") || p.type.includes("void")) {
+                    return false
+                  }
                   return !p.name.includes("children")
                 })
                 .map(renderPropControl)}

@@ -59,4 +59,6 @@ export { ScrollShadow } from "./scroll-shadow"
 export type { ScrollShadowProps } from "./scroll-shadow"
 export { Snippet } from "./snippet"
 export type { SnippetProps } from "./snippet"
+export { ColorPicker } from "./color-picker"
+export type { ColorPickerProps } from "./color-picker"
 

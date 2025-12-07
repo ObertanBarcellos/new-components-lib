@@ -1,5 +1,6 @@
 "use client"
 
+import * as React from "react"
 import { CodeBlock } from "@/components/docs/code-block"
 import { PropsTable } from "@/components/docs/props-table"
 import { ComponentPreview } from "@/components/docs/component-preview"
@@ -100,6 +101,7 @@ const componentMap: Record<string, any> = {
   ModalTitle: Components.ModalTitle,
   ModalDescription: Components.ModalDescription,
   ModalClose: Components.ModalClose,
+  ColorPicker: Components.ColorPicker,
 }
 
 // Função para mapear locale para language do Pagination
@@ -136,6 +138,7 @@ function getComponentId(componentName: string): string {
     "Calendar": "Calendar",
     "Date Picker": "DatePicker",
     "Avatar": "Avatar",
+    "ColorPicker": "ColorPicker",
   }
   return nameMap[componentName] || componentName.replace(/\s+/g, "")
 }
@@ -1058,6 +1061,15 @@ function renderComponent(componentId: string, props: Record<string, any>, t: (ke
         </Components.PaginationContent>
       </Component>
     )
+  }
+
+  if (checkId === "ColorPicker") {
+    // ColorPicker precisa de estado para funcionar corretamente
+    const ColorPickerWithState = () => {
+      const [color, setColor] = React.useState(props.value || "#000000")
+      return <Component {...props} value={color} onChange={setColor} />
+    }
+    return <ColorPickerWithState />
   }
 
   return <Component {...props} />

@@ -142,7 +142,7 @@ export function Header({ className }: HeaderProps) {
           )}
           {translationsMounted && (
             <span className="text-sm text-muted-foreground">
-              {t("common.version")} 1.1.1
+              {t("common.version")} 1.2.0
             </span>
           )}
         </div>

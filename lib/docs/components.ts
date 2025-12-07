@@ -2111,6 +2111,123 @@ import { Button } from "@/components/ui/button"
       },
     ],
   },
+  {
+    id: "color-picker",
+    name: "ColorPicker",
+    description: "Seletor de cor com botão que exibe a cor selecionada e abre um popover com seletor completo, suportando valores em hexadecimal e RGB com controle de opacidade.",
+    category: "Formulários",
+    importPath: "@/components/ui/color-picker",
+    props: [
+      {
+        name: "value",
+        type: "string",
+        default: "'#000000'",
+        description: "Cor inicial em formato hex, rgb ou rgba",
+      },
+      {
+        name: "onChange",
+        type: "(color: string) => void",
+        description: "Callback chamado quando a cor muda",
+      },
+      {
+        name: "format",
+        type: "'hex' | 'rgb' | 'rgba'",
+        default: "'hex'",
+        description: "Formato de saída da cor",
+      },
+      {
+        name: "showAlpha",
+        type: "boolean",
+        default: "false",
+        description: "Mostra controle de opacidade",
+      },
+      {
+        name: "size",
+        type: "'sm' | 'md' | 'lg'",
+        default: "'md'",
+        description: "Tamanho do botão",
+      },
+      {
+        name: "disabled",
+        type: "boolean",
+        default: "false",
+        description: "Desabilita o seletor",
+      },
+    ],
+    sizes: [
+      { name: "Small", value: "sm" },
+      { name: "Medium", value: "md" },
+      { name: "Large", value: "lg" },
+    ],
+    examples: [
+      {
+        title: "Básico",
+        code: `import { ColorPicker } from "@/components/ui/color-picker"
+import { useState } from "react"
+
+function Example() {
+  const [color, setColor] = useState("#2c09b9")
+  return <ColorPicker value={color} onChange={setColor} />
+}`,
+        props: { value: "#2c09b9" },
+      },
+      {
+        title: "Com opacidade",
+        code: `import { ColorPicker } from "@/components/ui/color-picker"
+import { useState } from "react"
+
+function Example() {
+  const [color, setColor] = useState("rgba(44, 9, 185, 0.5)")
+  return (
+    <ColorPicker 
+      value={color} 
+      onChange={setColor}
+      showAlpha 
+      format="rgba" 
+    />
+  )
+}`,
+        props: { value: "rgba(44, 9, 185, 0.5)", showAlpha: true, format: "rgba" },
+      },
+      {
+        title: "Formato RGB",
+        code: `import { ColorPicker } from "@/components/ui/color-picker"
+import { useState } from "react"
+
+function Example() {
+  const [color, setColor] = useState("rgb(255, 0, 0)")
+  return (
+    <ColorPicker 
+      value={color} 
+      onChange={setColor}
+      format="rgb" 
+    />
+  )
+}`,
+        props: { value: "rgb(255, 0, 0)", format: "rgb" },
+      },
+      {
+        title: "Tamanhos diferentes",
+        code: `import { ColorPicker } from "@/components/ui/color-picker"
+
+<ColorPicker value="#2c09b9" size="sm" />
+<ColorPicker value="#2c09b9" size="md" />
+<ColorPicker value="#2c09b9" size="lg" />`,
+        components: [
+          { props: { value: "#2c09b9", size: "sm" } },
+          { props: { value: "#2c09b9", size: "md" } },
+          { props: { value: "#2c09b9", size: "lg" } },
+        ],
+      },
+      {
+        title: "Desabilitado",
+        code: `import { ColorPicker } from "@/components/ui/color-picker"
+
+<ColorPicker value="#2c09b9" disabled />`,
+        props: { value: "#2c09b9", disabled: true },
+      },
+    ],
+  },
 ]
 
 export const categories = [
