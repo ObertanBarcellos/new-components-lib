@@ -1222,7 +1222,7 @@ export function ComponentPageContent({ component }: ComponentPageContentProps) {
                             // Garante que o value seja um número
                             const progressProps = {
                               ...comp.props,
-                              value: comp.props.value !== undefined ? Number(comp.props.value) : 50
+                              value: comp.props?.value !== undefined ? Number(comp.props?.value) : 50
                             }
                             return (
                               <div key={compIndex} className="w-full max-w-md space-y-2">
