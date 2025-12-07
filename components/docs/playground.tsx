@@ -38,6 +38,10 @@ export function Playground({ component, renderComponent }: PlaygroundProps) {
     const propsString = Object.entries(props)
       .filter(([_, value]) => value !== undefined && value !== null && value !== "")
       .map(([key, value]) => {
+        if (key === "className") {
+          // className sempre usa chaves para permitir múltiplas classes
+          return `className="${value}"`
+        }
         if (typeof value === "string") {
           return `${key}="${value}"`
         }
@@ -145,7 +149,13 @@ export function Playground({ component, renderComponent }: PlaygroundProps) {
             </CardHeader>
             <CardContent className="space-y-4">
               {component.props
-                .filter((p) => !p.name.includes("className") && !p.name.includes("children"))
+                .filter((p) => {
+                  // Permite className para Skeleton, mas filtra para outros componentes
+                  if (p.name === "className") {
+                    return component.name === "Skeleton"
+                  }
+                  return !p.name.includes("children")
+                })
                 .map(renderPropControl)}
             </CardContent>
           </Card>

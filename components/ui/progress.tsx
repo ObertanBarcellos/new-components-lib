@@ -37,15 +37,16 @@ const Progress = React.forwardRef<
       ref={ref}
       style={rootStyle}
       className={cn(
-        "relative h-4 w-full overflow-hidden rounded-full bg-secondary transition-all duration-300",
+        "relative h-4 w-full overflow-hidden rounded-full transition-all duration-300",
+        !customBgColor && "bg-secondary/50 dark:bg-secondary/30",
         className
       )}
       {...props}
     >
       <ProgressPrimitive.Indicator
         className={cn(
-          "h-full w-full flex-1 bg-primary transition-all duration-300 ease-in-out",
-          !customColor && "bg-primary"
+          "h-full w-full flex-1 transition-all duration-300 ease-in-out",
+          !customColor && "bg-[#2c09b9] dark:bg-[#2c09b9]"
         )}
         style={indicatorStyle}
       />
