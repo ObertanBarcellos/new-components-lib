@@ -1,12 +1,12 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
-export interface KeyboardKeyProps extends React.HTMLAttributes<HTMLKbdElement> {
+export interface KeyboardKeyProps extends React.HTMLAttributes<HTMLElement> {
   keys?: string | string[]
   customColor?: string
 }
 
-const KeyboardKey = React.forwardRef<HTMLKbdElement, KeyboardKeyProps>(
+const KeyboardKey = React.forwardRef<HTMLElement, KeyboardKeyProps>(
   ({ className, keys, children, customColor, ...props }, ref) => {
     const keysArray = keys
       ? Array.isArray(keys)
