@@ -140,6 +140,20 @@ function renderComponent(componentId: string, props: Record<string, any>, t: (ke
       </Component>
     )
   }
+  if (componentId === "Tooltip") {
+    return (
+      <Components.TooltipProvider>
+        <Components.Tooltip {...props}>
+          <Components.TooltipTrigger asChild>
+            <Components.Button variant="default">{t("common.hoverMe")}</Components.Button>
+          </Components.TooltipTrigger>
+          <Components.TooltipContent>
+            <p>{t("common.tooltipContent")}</p>
+          </Components.TooltipContent>
+        </Components.Tooltip>
+      </Components.TooltipProvider>
+    )
+  }
 
   return <Component {...props} />
 }

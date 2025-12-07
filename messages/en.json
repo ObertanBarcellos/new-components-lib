@@ -35,7 +35,9 @@
     "code": "Code",
     "controls": "Controls",
     "typeValue": "Type a value...",
-    "allPropsAvailable": "All available properties for the component"
+    "allPropsAvailable": "All available properties for the component",
+    "hoverMe": "Hover me",
+    "tooltipContent": "Useful information"
   },
   "button": {
     "examples": {

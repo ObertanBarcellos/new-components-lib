@@ -35,7 +35,9 @@
     "code": "Código",
     "controls": "Controles",
     "typeValue": "Digite um valor...",
-    "allPropsAvailable": "Todas as propriedades disponíveis para o componente"
+    "allPropsAvailable": "Todas as propriedades disponíveis para o componente",
+    "hoverMe": "Passe o mouse",
+    "tooltipContent": "Informação útil"
   },
   "button": {
     "examples": {
