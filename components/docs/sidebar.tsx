@@ -51,6 +51,17 @@ export function Sidebar({ className }: SidebarProps) {
         >
           {t("common.overview")}
         </Link>
+        <Link
+          href="/docs/icons"
+          className={cn(
+            "flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors",
+            pathname === "/docs/icons"
+              ? "bg-primary text-primary-foreground"
+              : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+          )}
+        >
+          {t("common.icons")}
+        </Link>
 
         {categories.map((category) => {
           const categoryComponents = getComponentsByCategory(category)

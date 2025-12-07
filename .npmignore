@@ -1,0 +1,66 @@
+# Source files
+app/
+stories/
+hooks/
+lib/docs/
+messages/
+components/docs/
+public/
+
+# Build outputs (except dist)
+.next/
+.vercel/
+out/
+storybook-static/
+
+# Development files
+*.log
+*.local
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Testing
+coverage/
+.nyc_output/
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+
+# Config files (keep only essential)
+eslint.config.mjs
+next.config.ts
+postcss.config.mjs
+vercel.json
+vitest.config.ts
+vitest.shims.d.ts
+tsconfig.json
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Documentation (keep README.md)
+VERCEL_DEPLOYMENT.md
+GUIA_PUBLICAR_ICONES_NPM.md
+debug-storybook.log
+
+# Dependencies
+node_modules/
+pnpm-lock.yaml
+
+# Misc
+.DS_Store
+*.pem
+

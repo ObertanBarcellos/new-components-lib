@@ -2228,6 +2228,668 @@ function Example() {
       },
     ],
   },
+  {
+    id: "form-field",
+    name: "FormField",
+    description: "Campo de formulário com label, descrição e mensagem de erro integrados.",
+    category: "Formulários",
+    importPath: "@/components/ui/form-field",
+    props: [
+      {
+        name: "label",
+        type: "string",
+        description: "Label do campo",
+      },
+      {
+        name: "error",
+        type: "string | boolean",
+        description: "Mensagem de erro ou indicador booleano",
+      },
+      {
+        name: "description",
+        type: "string",
+        description: "Texto de descrição/ajuda",
+      },
+      {
+        name: "required",
+        type: "boolean",
+        description: "Indica se o campo é obrigatório",
+      },
+      {
+        name: "htmlFor",
+        type: "string",
+        description: "ID do elemento de input associado",
+      },
+      {
+        name: "children",
+        type: "React.ReactNode",
+        description: "Componente de input a ser envolvido",
+        required: true,
+      },
+    ],
+    examples: [
+      {
+        title: "Básico",
+        code: `import { FormField } from "@/components/ui/form-field"
+import { Input } from "@/components/ui/input"
+
+<FormField label="Nome" htmlFor="name">
+  <Input id="name" placeholder="Digite seu nome" />
+</FormField>`,
+        props: {},
+      },
+      {
+        title: "Com erro",
+        code: `import { FormField } from "@/components/ui/form-field"
+import { Input } from "@/components/ui/input"
+
+<FormField label="Email" htmlFor="email" error="Email inválido">
+  <Input id="email" type="email" placeholder="Digite seu email" />
+</FormField>`,
+        props: { error: "Email inválido" },
+      },
+      {
+        title: "Com descrição",
+        code: `import { FormField } from "@/components/ui/form-field"
+import { Input } from "@/components/ui/input"
+
+<FormField 
+  label="Senha" 
+  htmlFor="password"
+  description="Mínimo de 8 caracteres"
+  required
+>
+  <Input id="password" type="password" />
+</FormField>`,
+        props: { description: "Mínimo de 8 caracteres", required: true },
+      },
+    ],
+  },
+  {
+    id: "rating",
+    name: "Rating",
+    description: "Componente de avaliação com estrelas ou ícones customizáveis.",
+    category: "Formulários",
+    importPath: "@/components/ui/rating",
+    props: [
+      {
+        name: "value",
+        type: "number",
+        description: "Valor controlado da avaliação",
+      },
+      {
+        name: "defaultValue",
+        type: "number",
+        description: "Valor padrão da avaliação",
+      },
+      {
+        name: "max",
+        type: "number",
+        default: "5",
+        description: "Número máximo de estrelas/ícones",
+      },
+      {
+        name: "onValueChange",
+        type: "(value: number) => void",
+        description: "Callback chamado quando o valor muda",
+      },
+      {
+        name: "readOnly",
+        type: "boolean",
+        default: "false",
+        description: "Modo somente leitura",
+      },
+      {
+        name: "disabled",
+        type: "boolean",
+        default: "false",
+        description: "Desabilita o componente",
+      },
+      {
+        name: "allowHalf",
+        type: "boolean",
+        default: "false",
+        description: "Permite avaliações de meio ponto",
+      },
+      {
+        name: "size",
+        type: "'sm' | 'default' | 'lg'",
+        default: "'default'",
+        description: "Tamanho dos ícones",
+      },
+      {
+        name: "filledColor",
+        type: "string",
+        description: "Cor dos ícones preenchidos",
+      },
+      {
+        name: "emptyColor",
+        type: "string",
+        description: "Cor dos ícones vazios",
+      },
+    ],
+    sizes: [
+      { name: "Small", value: "sm" },
+      { name: "Default", value: "default" },
+      { name: "Large", value: "lg" },
+    ],
+    examples: [
+      {
+        title: "Básico",
+        code: `import { Rating } from "@/components/ui/rating"
+
+<Rating defaultValue={3} onValueChange={(value) => console.log(value)} />`,
+        props: { defaultValue: 3 },
+      },
+      {
+        title: "Somente leitura",
+        code: `import { Rating } from "@/components/ui/rating"
+
+<Rating value={4} readOnly />`,
+        props: { value: 4, readOnly: true },
+      },
+      {
+        title: "Com meio ponto",
+        code: `import { Rating } from "@/components/ui/rating"
+
+<Rating defaultValue={3.5} allowHalf onValueChange={(value) => console.log(value)} />`,
+        props: { defaultValue: 3.5, allowHalf: true },
+      },
+      {
+        title: "Tamanhos diferentes",
+        code: `import { Rating } from "@/components/ui/rating"
+
+<Rating defaultValue={4} size="sm" />
+<Rating defaultValue={4} size="default" />
+<Rating defaultValue={4} size="lg" />`,
+        components: [
+          { props: { defaultValue: 4, size: "sm" } },
+          { props: { defaultValue: 4, size: "default" } },
+          { props: { defaultValue: 4, size: "lg" } },
+        ],
+      },
+    ],
+  },
+  {
+    id: "accordion",
+    name: "Accordion",
+    description: "Acordeão expansível para organizar conteúdo em seções colapsáveis.",
+    category: "Layout",
+    importPath: "@/components/ui/accordion",
+    props: [
+      {
+        name: "type",
+        type: "'single' | 'multiple'",
+        default: "'single'",
+        description: "Tipo de acordeão (single permite apenas um item aberto)",
+      },
+      {
+        name: "collapsible",
+        type: "boolean",
+        description: "Permite fechar o item aberto (apenas para type='single')",
+      },
+      {
+        name: "defaultValue",
+        type: "string | string[]",
+        description: "Valor padrão do item(s) aberto(s)",
+      },
+      {
+        name: "value",
+        type: "string | string[]",
+        description: "Valor controlado do item(s) aberto(s)",
+      },
+      {
+        name: "onValueChange",
+        type: "(value: string | string[]) => void",
+        description: "Callback chamado quando o valor muda",
+      },
+    ],
+    examples: [
+      {
+        title: "Básico",
+        code: `import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
+
+<Accordion type="single" collapsible>
+  <AccordionItem value="item-1">
+    <AccordionTrigger>Item 1</AccordionTrigger>
+    <AccordionContent>
+      Conteúdo do item 1
+    </AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="item-2">
+    <AccordionTrigger>Item 2</AccordionTrigger>
+    <AccordionContent>
+      Conteúdo do item 2
+    </AccordionContent>
+  </AccordionItem>
+</Accordion>`,
+        props: { type: "single", collapsible: true },
+      },
+      {
+        title: "Múltiplos itens",
+        code: `import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
+
+<Accordion type="multiple">
+  <AccordionItem value="item-1">
+    <AccordionTrigger>Item 1</AccordionTrigger>
+    <AccordionContent>Conteúdo 1</AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="item-2">
+    <AccordionTrigger>Item 2</AccordionTrigger>
+    <AccordionContent>Conteúdo 2</AccordionContent>
+  </AccordionItem>
+</Accordion>`,
+        props: { type: "multiple" },
+      },
+    ],
+  },
+  {
+    id: "file-upload",
+    name: "FileUpload",
+    description: "Componente de upload de arquivos com suporte a drag & drop, preview e validação.",
+    category: "Formulários",
+    importPath: "@/components/ui/file-upload",
+    props: [
+      {
+        name: "value",
+        type: "FileUploadFile[]",
+        description: "Valor controlado dos arquivos",
+      },
+      {
+        name: "onValueChange",
+        type: "(files: FileUploadFile[]) => void",
+        description: "Callback chamado quando os arquivos mudam",
+      },
+      {
+        name: "accept",
+        type: "string",
+        description: "Tipos de arquivo aceitos (ex: 'image/*', '.pdf')",
+      },
+      {
+        name: "maxSize",
+        type: "number",
+        description: "Tamanho máximo em bytes",
+      },
+      {
+        name: "maxFiles",
+        type: "number",
+        description: "Número máximo de arquivos",
+      },
+      {
+        name: "multiple",
+        type: "boolean",
+        default: "false",
+        description: "Permite múltiplos arquivos",
+      },
+      {
+        name: "disabled",
+        type: "boolean",
+        default: "false",
+        description: "Desabilita o componente",
+      },
+      {
+        name: "onUpload",
+        type: "(files: File[]) => Promise<void> | void",
+        description: "Callback chamado ao fazer upload",
+      },
+    ],
+    examples: [
+      {
+        title: "Básico",
+        code: `import { FileUpload } from "@/components/ui/file-upload"
+
+<FileUpload 
+  onValueChange={(files) => console.log(files)}
+/>`,
+        props: {},
+      },
+      {
+        title: "Múltiplos arquivos",
+        code: `import { FileUpload } from "@/components/ui/file-upload"
+
+<FileUpload 
+  multiple
+  maxFiles={5}
+  onValueChange={(files) => console.log(files)}
+/>`,
+        props: { multiple: true, maxFiles: 5 },
+      },
+      {
+        title: "Com validação",
+        code: `import { FileUpload } from "@/components/ui/file-upload"
+
+<FileUpload 
+  accept="image/*"
+  maxSize={5 * 1024 * 1024}
+  onValueChange={(files) => console.log(files)}
+/>`,
+        props: { accept: "image/*", maxSize: 5 * 1024 * 1024 },
+      },
+    ],
+  },
+  {
+    id: "sidebar",
+    name: "Sidebar",
+    description: "Barra lateral responsiva e colapsável.",
+    category: "Layout",
+    importPath: "@/components/ui/sidebar",
+    props: [
+      {
+        name: "open",
+        type: "boolean",
+        description: "Controla se está aberto",
+      },
+      {
+        name: "onOpenChange",
+        type: "(open: boolean) => void",
+        description: "Callback chamado quando o estado muda",
+      },
+      {
+        name: "side",
+        type: "'left' | 'right'",
+        default: "'left'",
+        description: "Lado da sidebar",
+      },
+      {
+        name: "variant",
+        type: "'sidebar' | 'overlay'",
+        default: "'sidebar'",
+        description: "Variante da sidebar",
+      },
+      {
+        name: "showCloseButton",
+        type: "boolean",
+        default: "true",
+        description: "Mostra botão de fechar",
+      },
+      {
+        name: "trigger",
+        type: "React.ReactNode",
+        description: "Elemento que aciona a sidebar",
+      },
+    ],
+    examples: [
+      {
+        title: "Básico",
+        code: `import { Sidebar, SidebarTrigger, SidebarContent, SidebarHeader, SidebarFooter } from "@/components/ui/sidebar"
+import { Button } from "@/components/ui/button"
+
+function Example() {
+  const [open, setOpen] = React.useState(false)
+  
+  return (
+    <>
+      <SidebarTrigger />
+      <Sidebar open={open} onOpenChange={setOpen}>
+        <SidebarHeader>
+          <h2 className="text-lg font-semibold">Menu</h2>
+        </SidebarHeader>
+        <SidebarContent>
+          <nav className="space-y-2">
+            <a href="#" className="block px-3 py-2 rounded-md hover:bg-accent">Item 1</a>
+            <a href="#" className="block px-3 py-2 rounded-md hover:bg-accent">Item 2</a>
+            <a href="#" className="block px-3 py-2 rounded-md hover:bg-accent">Item 3</a>
+          </nav>
+        </SidebarContent>
+        <SidebarFooter>
+          <p className="text-sm text-muted-foreground">Rodapé</p>
+        </SidebarFooter>
+      </Sidebar>
+    </>
+  )
+}`,
+        props: {},
+      },
+      {
+        title: "Overlay",
+        code: `import { Sidebar, SidebarContent, SidebarHeader } from "@/components/ui/sidebar"
+import { Button } from "@/components/ui/button"
+
+function Example() {
+  const [open, setOpen] = React.useState(false)
+  
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>Abrir Sidebar</Button>
+      <Sidebar variant="overlay" open={open} onOpenChange={setOpen}>
+        <SidebarHeader>
+          <h2 className="text-lg font-semibold">Menu</h2>
+        </SidebarHeader>
+        <SidebarContent>
+          <p>Conteúdo da sidebar</p>
+        </SidebarContent>
+      </Sidebar>
+    </>
+  )
+}`,
+        props: { variant: "overlay" },
+      },
+      {
+        title: "Com trigger customizado",
+        code: `import { Sidebar, SidebarContent } from "@/components/ui/sidebar"
+import { Button } from "@/components/ui/button"
+
+function Example() {
+  const [open, setOpen] = React.useState(false)
+  
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>Abrir Menu</Button>
+      <Sidebar open={open} onOpenChange={setOpen} trigger={<Button>Abrir</Button>}>
+        <SidebarContent>
+          <nav className="space-y-2">
+            <a href="#" className="block px-3 py-2 rounded-md hover:bg-accent">Página Inicial</a>
+            <a href="#" className="block px-3 py-2 rounded-md hover:bg-accent">Sobre</a>
+            <a href="#" className="block px-3 py-2 rounded-md hover:bg-accent">Contato</a>
+          </nav>
+        </SidebarContent>
+      </Sidebar>
+    </>
+  )
+}`,
+        props: {},
+      },
+    ],
+  },
+  {
+    id: "carousel",
+    name: "Carousel",
+    description: "Carrossel de imagens ou conteúdo com navegação e indicadores.",
+    category: "Layout",
+    importPath: "@/components/ui/carousel",
+    props: [
+      {
+        name: "opts",
+        type: "CarouselOptions",
+        description: "Opções do carrossel (loop, autoplay, etc)",
+      },
+      {
+        name: "orientation",
+        type: "'horizontal' | 'vertical'",
+        default: "'horizontal'",
+        description: "Orientação do carrossel",
+      },
+    ],
+    examples: [
+      {
+        title: "Básico",
+        code: `import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel"
+
+<Carousel>
+  <CarouselContent>
+    <CarouselItem>Item 1</CarouselItem>
+    <CarouselItem>Item 2</CarouselItem>
+    <CarouselItem>Item 3</CarouselItem>
+  </CarouselContent>
+  <CarouselPrevious />
+  <CarouselNext />
+</Carousel>`,
+        props: {},
+      },
+      {
+        title: "Com indicadores",
+        code: `import { Carousel, CarouselContent, CarouselItem, CarouselDots } from "@/components/ui/carousel"
+
+<Carousel>
+  <CarouselContent>
+    <CarouselItem>Item 1</CarouselItem>
+    <CarouselItem>Item 2</CarouselItem>
+    <CarouselItem>Item 3</CarouselItem>
+  </CarouselContent>
+  <CarouselDots />
+</Carousel>`,
+        props: {},
+      },
+    ],
+  },
+  {
+    id: "command-palette",
+    name: "CommandPalette",
+    description: "Paleta de comandos acionada por Cmd+K (ou Ctrl+K) para busca rápida de ações.",
+    category: "Navegação",
+    importPath: "@/components/ui/command-palette",
+    props: [
+      {
+        name: "open",
+        type: "boolean",
+        description: "Controla se está aberto",
+      },
+      {
+        name: "onOpenChange",
+        type: "(open: boolean) => void",
+        description: "Callback chamado quando o estado muda",
+      },
+      {
+        name: "commands",
+        type: "CommandPaletteCommand[]",
+        description: "Lista de comandos disponíveis",
+      },
+      {
+        name: "placeholder",
+        type: "string",
+        default: "'Digite um comando ou pesquise...'",
+        description: "Placeholder do input de busca",
+      },
+      {
+        name: "emptyMessage",
+        type: "string",
+        default: "'Nenhum resultado encontrado.'",
+        description: "Mensagem quando não há resultados",
+      },
+      {
+        name: "trigger",
+        type: "React.ReactNode",
+        description: "Elemento que aciona a paleta",
+      },
+      {
+        name: "onCommandSelect",
+        type: "(command: CommandPaletteCommand) => void",
+        description: "Callback chamado quando um comando é selecionado",
+      },
+    ],
+    examples: [
+      {
+        title: "Básico",
+        code: `import { CommandPalette } from "@/components/ui/command-palette"
+import { Button } from "@/components/ui/button"
+
+const commands = [
+  { id: "1", label: "Criar documento", onSelect: () => console.log("Criar") },
+  { id: "2", label: "Abrir arquivo", onSelect: () => console.log("Abrir") },
+]
+
+<CommandPalette 
+  commands={commands}
+  trigger={<Button>Abrir Paleta</Button>}
+/>`,
+        props: {},
+      },
+    ],
+  },
+  {
+    id: "rich-text-editor",
+    name: "RichTextEditor",
+    description: "Editor de texto rico com formatação, listas, headings e links.",
+    category: "Formulários",
+    importPath: "@/components/ui/rich-text-editor",
+    props: [
+      {
+        name: "value",
+        type: "string",
+        description: "Valor controlado em HTML",
+      },
+      {
+        name: "defaultValue",
+        type: "string",
+        description: "Valor padrão em HTML",
+      },
+      {
+        name: "onChange",
+        type: "(html: string) => void",
+        description: "Callback chamado quando o conteúdo muda",
+      },
+      {
+        name: "placeholder",
+        type: "string",
+        default: "'Comece a escrever...'",
+        description: "Placeholder do editor",
+      },
+      {
+        name: "editable",
+        type: "boolean",
+        default: "true",
+        description: "Permite edição",
+      },
+      {
+        name: "showToolbar",
+        type: "boolean",
+        default: "true",
+        description: "Mostra barra de ferramentas",
+      },
+      {
+        name: "minHeight",
+        type: "string",
+        default: "'200px'",
+        description: "Altura mínima do editor",
+      },
+      {
+        name: "maxHeight",
+        type: "string",
+        description: "Altura máxima do editor",
+      },
+    ],
+    examples: [
+      {
+        title: "Básico",
+        code: `import { RichTextEditor } from "@/components/ui/rich-text-editor"
+
+<RichTextEditor 
+  onChange={(html) => console.log(html)}
+/>`,
+        props: {},
+      },
+      {
+        title: "Sem toolbar",
+        code: `import { RichTextEditor } from "@/components/ui/rich-text-editor"
+
+<RichTextEditor 
+  showToolbar={false}
+  placeholder="Digite aqui..."
+/>`,
+        props: { showToolbar: false },
+      },
+      {
+        title: "Somente leitura",
+        code: `import { RichTextEditor } from "@/components/ui/rich-text-editor"
+
+<RichTextEditor 
+  editable={false}
+  value="<p>Texto formatado</p>"
+/>`,
+        props: { editable: false, value: "<p>Texto formatado</p>" },
+      },
+    ],
+  },
 ]
 
 export const categories = [

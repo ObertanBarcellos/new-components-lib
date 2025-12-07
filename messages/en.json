@@ -37,7 +37,8 @@
     "typeValue": "Type a value...",
     "allPropsAvailable": "All available properties for the component",
     "hoverMe": "Hover me",
-    "tooltipContent": "Useful information"
+    "tooltipContent": "Useful information",
+    "icons": "Icons"
   },
   "button": {
     "examples": {
@@ -67,6 +68,16 @@
     "Overlay": "Overlay",
     "Date": "Date",
     "Especiais": "Special"
+  },
+  "icons": {
+    "searchPlaceholder": "Search icons...",
+    "noResults": "No icons found",
+    "copyCode": "Copy code",
+    "copied": "Copied!",
+    "title": "Icon Library",
+    "description": "Explore all available icons from lucide-react",
+    "icon": "icon",
+    "iconsPlural": "icons"
   }
 }
 

@@ -37,7 +37,8 @@
     "typeValue": "Escribe un valor...",
     "allPropsAvailable": "Todas las propiedades disponibles para el componente",
     "hoverMe": "Pasa el mouse",
-    "tooltipContent": "Información útil"
+    "tooltipContent": "Información útil",
+    "icons": "Iconos"
   },
   "button": {
     "examples": {
@@ -67,6 +68,16 @@
     "Overlay": "Overlay",
     "Date": "Fecha",
     "Especiais": "Especiales"
+  },
+  "icons": {
+    "searchPlaceholder": "Buscar iconos...",
+    "noResults": "No se encontraron iconos",
+    "copyCode": "Copiar código",
+    "copied": "¡Copiado!",
+    "title": "Biblioteca de Iconos",
+    "description": "Explora todos los iconos disponibles de lucide-react",
+    "icon": "icono",
+    "iconsPlural": "iconos"
   }
 }
 

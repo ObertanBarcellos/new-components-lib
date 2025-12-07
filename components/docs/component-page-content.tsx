@@ -102,6 +102,27 @@ const componentMap: Record<string, any> = {
   ModalDescription: Components.ModalDescription,
   ModalClose: Components.ModalClose,
   ColorPicker: Components.ColorPicker,
+  FormField: Components.FormField,
+  Rating: Components.Rating,
+  Accordion: Components.Accordion,
+  AccordionItem: Components.AccordionItem,
+  AccordionTrigger: Components.AccordionTrigger,
+  AccordionContent: Components.AccordionContent,
+  FileUpload: Components.FileUpload,
+  Sidebar: Components.Sidebar,
+  SidebarTrigger: Components.SidebarTrigger,
+  SidebarClose: Components.SidebarClose,
+  SidebarContent: Components.SidebarContent,
+  SidebarHeader: Components.SidebarHeader,
+  SidebarFooter: Components.SidebarFooter,
+  Carousel: Components.Carousel,
+  CarouselContent: Components.CarouselContent,
+  CarouselItem: Components.CarouselItem,
+  CarouselPrevious: Components.CarouselPrevious,
+  CarouselNext: Components.CarouselNext,
+  CarouselDots: Components.CarouselDots,
+  CommandPalette: Components.CommandPalette,
+  RichTextEditor: Components.RichTextEditor,
 }
 
 // Função para mapear locale para language do Pagination
@@ -139,6 +160,17 @@ function getComponentId(componentName: string): string {
     "Date Picker": "DatePicker",
     "Avatar": "Avatar",
     "ColorPicker": "ColorPicker",
+    "FormField": "FormField",
+    "Rating": "Rating",
+    "Accordion": "Accordion",
+    "File Upload": "FileUpload",
+    "FileUpload": "FileUpload",
+    "Sidebar": "Sidebar",
+    "Carousel": "Carousel",
+    "Command Palette": "CommandPalette",
+    "CommandPalette": "CommandPalette",
+    "Rich Text Editor": "RichTextEditor",
+    "RichTextEditor": "RichTextEditor",
   }
   return nameMap[componentName] || componentName.replace(/\s+/g, "")
 }
@@ -1071,6 +1103,124 @@ function renderComponent(componentId: string, props: Record<string, any>, t: (ke
     }
     return <ColorPickerWithState />
   }
+  if (checkId === "FormField") {
+    return (
+      <Component {...props}>
+        <Components.Input placeholder={t("common.typeSomething")} />
+      </Component>
+    )
+  }
+  if (checkId === "Rating") {
+    const RatingWithState = () => {
+      const [value, setValue] = React.useState(props.defaultValue || props.value || 0)
+      return <Component {...props} value={value} onValueChange={setValue} />
+    }
+    return <RatingWithState />
+  }
+  if (checkId === "Accordion") {
+    const type = props.type || "single"
+    const collapsible = props.collapsible !== undefined ? props.collapsible : true
+    return (
+      <Component {...props} type={type} collapsible={collapsible}>
+        <Components.AccordionItem value="item-1">
+          <Components.AccordionTrigger>Item 1</Components.AccordionTrigger>
+          <Components.AccordionContent>Conteúdo do item 1</Components.AccordionContent>
+        </Components.AccordionItem>
+        <Components.AccordionItem value="item-2">
+          <Components.AccordionTrigger>Item 2</Components.AccordionTrigger>
+          <Components.AccordionContent>Conteúdo do item 2</Components.AccordionContent>
+        </Components.AccordionItem>
+      </Component>
+    )
+  }
+  if (checkId === "FileUpload") {
+    const FileUploadWithState = () => {
+      const [files, setFiles] = React.useState<Components.FileUploadFile[]>([])
+      return <Component {...props} value={files} onValueChange={setFiles} />
+    }
+    return <FileUploadWithState />
+  }
+  if (checkId === "Sidebar") {
+    const SidebarWithState = () => {
+      const [open, setOpen] = React.useState(props.open !== undefined ? props.open : true)
+      const variant = props.variant || "sidebar"
+      
+      if (variant === "overlay") {
+        return (
+          <div className="space-y-4">
+            <Components.Button onClick={() => setOpen(true)}>Abrir Sidebar</Components.Button>
+            <Component {...props} open={open} onOpenChange={setOpen} variant={variant}>
+              <Components.SidebarHeader>
+                <h2 className="text-lg font-semibold">Menu</h2>
+              </Components.SidebarHeader>
+              <Components.SidebarContent>
+                <p>Conteúdo da sidebar</p>
+              </Components.SidebarContent>
+            </Component>
+          </div>
+        )
+      }
+      
+      // Para exemplos, renderizar como um container simples sem fixed positioning
+      return (
+        <div className="relative border rounded-lg overflow-hidden bg-background" style={{ minHeight: "300px", width: "100%", maxWidth: "400px" }}>
+          <div className="flex flex-col h-full w-64 border-r border-border">
+            <Components.SidebarHeader>
+              <h2 className="text-lg font-semibold">Menu</h2>
+            </Components.SidebarHeader>
+            <Components.SidebarContent>
+              <nav className="space-y-2">
+                <a href="#" className="block px-3 py-2 rounded-md hover:bg-accent">Item 1</a>
+                <a href="#" className="block px-3 py-2 rounded-md hover:bg-accent">Item 2</a>
+                <a href="#" className="block px-3 py-2 rounded-md hover:bg-accent">Item 3</a>
+              </nav>
+            </Components.SidebarContent>
+            <Components.SidebarFooter>
+              <p className="text-sm text-muted-foreground">Rodapé</p>
+            </Components.SidebarFooter>
+          </div>
+        </div>
+      )
+    }
+    return <SidebarWithState />
+  }
+  if (checkId === "Carousel") {
+    return (
+      <Component {...props}>
+        <Components.CarouselContent>
+          <Components.CarouselItem>
+            <div className="flex items-center justify-center h-48 bg-muted rounded-lg">Item 1</div>
+          </Components.CarouselItem>
+          <Components.CarouselItem>
+            <div className="flex items-center justify-center h-48 bg-muted rounded-lg">Item 2</div>
+          </Components.CarouselItem>
+          <Components.CarouselItem>
+            <div className="flex items-center justify-center h-48 bg-muted rounded-lg">Item 3</div>
+          </Components.CarouselItem>
+        </Components.CarouselContent>
+        <Components.CarouselPrevious />
+        <Components.CarouselNext />
+      </Component>
+    )
+  }
+  if (checkId === "CommandPalette") {
+    const commands = props.commands || [
+      { id: "1", label: "Criar documento", onSelect: () => {} },
+      { id: "2", label: "Abrir arquivo", onSelect: () => {} },
+    ]
+    const CommandPaletteWithState = () => {
+      const [open, setOpen] = React.useState(props.open || false)
+      return <Component {...props} open={open} onOpenChange={setOpen} commands={commands} />
+    }
+    return <CommandPaletteWithState />
+  }
+  if (checkId === "RichTextEditor") {
+    const RichTextEditorWithState = () => {
+      const [value, setValue] = React.useState(props.value || props.defaultValue || "")
+      return <Component {...props} value={value} onChange={setValue} />
+    }
+    return <RichTextEditorWithState />
+  }
 
   return <Component {...props} />
 }
@@ -1081,6 +1231,11 @@ interface ComponentPageContentProps {
 
 export function ComponentPageContent({ component }: ComponentPageContentProps) {
   const { t, locale } = useTranslations()
+  const [isMounted, setIsMounted] = React.useState(false)
+
+  React.useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   return (
     <div className="space-y-8">
@@ -1104,7 +1259,8 @@ export function ComponentPageContent({ component }: ComponentPageContentProps) {
         <p className="text-xl text-muted-foreground">{component.description}</p>
       </div>
 
-      <Tabs defaultValue="overview" className="w-full">
+      {isMounted ? (
+        <Tabs defaultValue="overview" className="w-full">
         <TabsList>
           <TabsTrigger value="overview">{t("common.overview")}</TabsTrigger>
           <TabsTrigger value="playground">{t("common.playground")}</TabsTrigger>
@@ -1359,6 +1515,15 @@ export function ComponentPageContent({ component }: ComponentPageContentProps) {
           </Card>
         </TabsContent>
       </Tabs>
+      ) : (
+        <div className="w-full">
+          <div className="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground">
+            <button className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-background text-foreground shadow-sm">
+              {t("common.overview")}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -5,7 +5,13 @@ import * as TabsPrimitive from "@radix-ui/react-tabs"
 
 import { cn, getContrastTextColor } from "@/lib/utils"
 
-const Tabs = TabsPrimitive.Root
+const Tabs = React.forwardRef<
+  React.ElementRef<typeof TabsPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root>
+>(({ ...props }, ref) => {
+  return <TabsPrimitive.Root ref={ref} {...props} />
+})
+Tabs.displayName = "Tabs"
 
 export interface TabsListProps extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.List> {
   customColor?: string
