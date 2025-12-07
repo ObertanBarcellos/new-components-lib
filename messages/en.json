@@ -1,0 +1,70 @@
+{
+  "common": {
+    "search": "Search components...",
+    "noResults": "No components found",
+    "toggleTheme": "Toggle theme",
+    "version": "Version",
+    "overview": "Overview",
+    "playground": "Playground",
+    "props": "Props",
+    "examples": "Examples",
+    "variants": "Variants",
+    "sizes": "Sizes",
+    "documentation": "Documentation",
+    "componentNotFound": "Component not found",
+    "seeAll": "See all",
+    "gettingStarted": "Getting Started",
+    "installDependencies": "# Install dependencies",
+    "importComponent": "# Import component",
+    "viewDocumentation": "View Documentation",
+    "popularComponents": "Popular Components",
+    "components": "component",
+    "componentsPlural": "components",
+    "button": "Button",
+    "typeSomething": "Type something...",
+    "title": "Title",
+    "description": "Description",
+    "cardContent": "Card content",
+    "select": "Select...",
+    "option": "Option",
+    "open": "Open",
+    "dialogContent": "Dialog content",
+    "tab": "Tab",
+    "content": "Content",
+    "preview": "Preview",
+    "code": "Code",
+    "controls": "Controls",
+    "typeValue": "Type a value...",
+    "allPropsAvailable": "All available properties for the component"
+  },
+  "button": {
+    "examples": {
+      "basic": "Basic",
+      "withLoading": "With loading",
+      "withIcon": "With icon"
+    },
+    "clickHere": "Click here",
+    "loading": "Loading...",
+    "like": "Like"
+  },
+  "header": {
+    "searchPlaceholder": "Search components...",
+    "toggleTheme": "Toggle theme"
+  },
+  "home": {
+    "title": "Component Library",
+    "description": "A complete collection of modern, accessible, and customizable UI components built with React and Tailwind CSS.",
+    "gettingStartedTitle": "Getting Started",
+    "gettingStartedDescription": "Install and start using the components in your project"
+  },
+  "categories": {
+    "Formulários": "Forms",
+    "Layout": "Layout",
+    "Feedback": "Feedback",
+    "Navegação": "Navigation",
+    "Overlay": "Overlay",
+    "Date": "Date",
+    "Especiais": "Special"
+  }
+}
+

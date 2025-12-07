@@ -17,7 +17,7 @@ const Switch = React.forwardRef<
   SwitchProps
 >(({ className, customColor, customCheckedColor, customUncheckedColor, size = "default", ...props }, ref) => {
   const colorStyles = React.useMemo(() => {
-    const styles: React.CSSProperties = {}
+    const styles: React.CSSProperties & Record<string, string> = {}
     // Se customColor for fornecido, usa para ambos os estados
     if (customColor) {
       styles['--switch-checked-color'] = customColor

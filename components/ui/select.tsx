@@ -23,7 +23,7 @@ const SelectTrigger = React.forwardRef<
   SelectTriggerProps
 >(({ className, children, customBorderColor, customFocusColor, ...props }, ref) => {
   const colorStyles = React.useMemo(() => {
-    const styles: React.CSSProperties = {}
+    const styles: React.CSSProperties & Record<string, string> = {}
     if (customBorderColor) {
       styles['--select-border-color'] = customBorderColor
     }

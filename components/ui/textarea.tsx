@@ -11,7 +11,7 @@ export interface TextareaProps extends React.ComponentProps<"textarea"> {
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, error, customBorderColor, customFocusColor, ...props }, ref) => {
     const colorStyles = React.useMemo(() => {
-      const styles: React.CSSProperties = {}
+      const styles: React.CSSProperties & Record<string, string> = {}
       if (customBorderColor && !error) {
         styles['--textarea-border-color'] = customBorderColor
       }

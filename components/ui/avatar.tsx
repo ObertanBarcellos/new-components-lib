@@ -14,7 +14,7 @@ const Avatar = React.forwardRef<
   AvatarProps
 >(({ className, customRingColor, ...props }, ref) => {
   const colorStyles = React.useMemo(() => {
-    const styles: React.CSSProperties = {}
+    const styles: React.CSSProperties & Record<string, string> = {}
     if (customRingColor) {
       styles['--avatar-ring-color'] = customRingColor
     }

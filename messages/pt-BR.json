@@ -1,0 +1,70 @@
+{
+  "common": {
+    "search": "Buscar componentes...",
+    "noResults": "Nenhum componente encontrado",
+    "toggleTheme": "Alternar tema",
+    "version": "Versão",
+    "overview": "Visão Geral",
+    "playground": "Playground",
+    "props": "Props",
+    "examples": "Exemplos",
+    "variants": "Variantes",
+    "sizes": "Tamanhos",
+    "documentation": "Documentação",
+    "componentNotFound": "Componente não encontrado",
+    "seeAll": "Ver todos",
+    "gettingStarted": "Começando",
+    "installDependencies": "# Instalar dependências",
+    "importComponent": "# Importar componente",
+    "viewDocumentation": "Ver Documentação",
+    "popularComponents": "Componentes Populares",
+    "components": "componente",
+    "componentsPlural": "componentes",
+    "button": "Botão",
+    "typeSomething": "Digite algo...",
+    "title": "Título",
+    "description": "Descrição",
+    "cardContent": "Conteúdo do card",
+    "select": "Selecione...",
+    "option": "Opção",
+    "open": "Abrir",
+    "dialogContent": "Conteúdo do dialog",
+    "tab": "Aba",
+    "content": "Conteúdo",
+    "preview": "Preview",
+    "code": "Código",
+    "controls": "Controles",
+    "typeValue": "Digite um valor...",
+    "allPropsAvailable": "Todas as propriedades disponíveis para o componente"
+  },
+  "button": {
+    "examples": {
+      "basic": "Básico",
+      "withLoading": "Com loading",
+      "withIcon": "Com ícone"
+    },
+    "clickHere": "Clique aqui",
+    "loading": "Carregando...",
+    "like": "Curtir"
+  },
+  "header": {
+    "searchPlaceholder": "Buscar componentes...",
+    "toggleTheme": "Alternar tema"
+  },
+  "home": {
+    "title": "Biblioteca de Componentes",
+    "description": "Uma coleção completa de componentes UI modernos, acessíveis e customizáveis construídos com React e Tailwind CSS.",
+    "gettingStartedTitle": "Começando",
+    "gettingStartedDescription": "Instale e comece a usar os componentes em seu projeto"
+  },
+  "categories": {
+    "Formulários": "Formulários",
+    "Layout": "Layout",
+    "Feedback": "Feedback",
+    "Navegação": "Navegação",
+    "Overlay": "Overlay",
+    "Date": "Date",
+    "Especiais": "Especiais"
+  }
+}
+

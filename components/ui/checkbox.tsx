@@ -16,7 +16,7 @@ const Checkbox = React.forwardRef<
   CheckboxProps
 >(({ className, customColor, customCheckedColor, ...props }, ref) => {
   const colorStyles = React.useMemo(() => {
-    const styles: React.CSSProperties = {}
+    const styles: React.CSSProperties & Record<string, string> = {}
     if (customColor) {
       styles['--checkbox-color'] = customColor
     }

@@ -53,7 +53,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const isDisabled = disabled || loading
 
     const colorStyles = React.useMemo(() => {
-      const styles: React.CSSProperties = {}
+      const styles: React.CSSProperties & Record<string, string> = {}
       if (customColor && variant === "default") {
         styles.backgroundColor = customColor
         styles.borderColor = customColor

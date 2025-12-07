@@ -44,7 +44,7 @@ function Calendar({
   const defaultClassNames = getDefaultClassNames()
 
   const colorStyles = React.useMemo(() => {
-    const styles: React.CSSProperties = {}
+    const styles: React.CSSProperties & Record<string, string> = {}
     if (primaryColor) {
       styles['--calendar-primary'] = primaryColor
       // Calcula automaticamente a cor do texto baseado na cor primária
@@ -272,7 +272,7 @@ function CalendarDayButton({
 
   // Aplicar estilos inline quando há cores customizadas
   const buttonStyles = React.useMemo(() => {
-    const styles: React.CSSProperties = {}
+    const styles: React.CSSProperties & Record<string, string> = {}
     
     if (modifiers.selected && !modifiers.range_start && !modifiers.range_end && !modifiers.range_middle) {
       // Seleção única

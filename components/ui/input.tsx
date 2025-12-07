@@ -14,7 +14,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const hasIcons = startIcon || endIcon
 
     const colorStyles = React.useMemo(() => {
-      const styles: React.CSSProperties = {}
+      const styles: React.CSSProperties & Record<string, string> = {}
       if (customBorderColor && !error) {
         styles['--input-border-color'] = customBorderColor
       }
