@@ -14,14 +14,13 @@ const Accordion = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Root>,
   AccordionProps
 >(({ type = "single", collapsible = true, ...props }, ref) => {
-  return (
-    <AccordionPrimitive.Root
-      ref={ref}
-      type={type}
-      collapsible={type === "single" ? collapsible : undefined}
-      {...props}
-    />
-  )
+  const rootProps = {
+    ...props,
+    type,
+    ...(type === "single" ? { collapsible } : {}),
+  } as React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Root>
+
+  return <AccordionPrimitive.Root ref={ref} {...rootProps} />
 })
 Accordion.displayName = "Accordion"
 
