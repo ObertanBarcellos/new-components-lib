@@ -110,7 +110,7 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
     React.useEffect(() => {
       if (editor && controlledValue !== undefined && editor.getHTML() !== controlledValue) {
         const isFocused = editor.isFocused
-        editor.commands.setContent(controlledValue, false)
+        editor.commands.setContent(controlledValue, { emitUpdate: false })
         if (isFocused) {
           editor.commands.focus()
         }
