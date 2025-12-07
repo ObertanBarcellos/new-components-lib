@@ -11,7 +11,7 @@ export interface CodeExample {
   description?: string
   code: string
   props?: Record<string, any>
-  components?: Array<{ props?: Record<string, any>; children?: string; icon?: string }>
+  components?: Array<{ id?: string; props?: Record<string, any>; children?: string; icon?: string }>
 }
 
 export interface Variant {
