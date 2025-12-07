@@ -11,7 +11,7 @@ import { DayButton, DayPicker, getDefaultClassNames } from "react-day-picker"
 import { cn, getContrastTextColor } from "@/lib/utils"
 import { Button, buttonVariants } from "@/components/ui/button"
 
-export interface CalendarProps extends React.ComponentProps<typeof DayPicker> {
+export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
   buttonVariant?: React.ComponentProps<typeof Button>["variant"]
   primaryColor?: string
   accentColor?: string
