@@ -38,7 +38,8 @@
     "allPropsAvailable": "All available properties for the component",
     "hoverMe": "Hover me",
     "tooltipContent": "Useful information",
-    "icons": "Icons"
+    "icons": "Icons",
+    "credits": "Credits"
   },
   "button": {
     "examples": {
@@ -78,6 +79,24 @@
     "description": "Explore all available icons from lucide-react",
     "icon": "icon",
     "iconsPlural": "icons"
+  },
+  "credits": {
+    "title": "Credits & Technologies",
+    "description": "This library was built using the following open-source technologies and libraries. We thank all maintainers and contributors.",
+    "viewDocs": "View documentation",
+    "categories": {
+      "uiLibraries": "UI Libraries",
+      "styling": "Styling",
+      "animations": "Animations",
+      "buildTools": "Build Tools",
+      "testing": "Testing",
+      "utilities": "Utilities",
+      "coreTechnologies": "Core Technologies"
+    },
+    "summary": {
+      "title": "Summary",
+      "description": "This library uses {count} open-source libraries and technologies to provide a modern and efficient development experience."
+    }
   }
 }
 

@@ -1,8 +1,11 @@
 "use client"
 
 import * as React from "react"
+import { useEffect, useRef } from "react"
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
 import { Check, ChevronRight, Circle } from "lucide-react"
+import { gsap } from "gsap"
+import { animatePopover, animateCheck } from "@/lib/gsap-animations"
 
 import { cn } from "@/lib/utils"
 
@@ -43,16 +46,46 @@ DropdownMenuSubTrigger.displayName =
 const DropdownMenuSubContent = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.SubContent>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.SubContent>
->(({ className, ...props }, ref) => (
-  <DropdownMenuPrimitive.SubContent
-    ref={ref}
-    className={cn(
-      "z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-lg data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-dropdown-menu-content-transform-origin]",
-      className
-    )}
-    {...props}
-  />
-))
+>(({ className, ...props }, ref) => {
+  const contentRef = useRef<HTMLDivElement>(null)
+  const combinedRef = (ref || contentRef) as React.RefObject<HTMLDivElement>
+
+  useEffect(() => {
+    const element = combinedRef.current
+    if (!element) return
+
+    const observer = new MutationObserver(() => {
+      const isOpen = element.getAttribute("data-state") === "open"
+      const side = (element.getAttribute("data-side") || "bottom") as "top" | "bottom" | "left" | "right"
+      animatePopover(element, isOpen, side)
+    })
+
+    observer.observe(element, {
+      attributes: true,
+      attributeFilter: ["data-state", "data-side"],
+    })
+
+    const isOpen = element.getAttribute("data-state") === "open"
+    if (isOpen) {
+      const side = (element.getAttribute("data-side") || "bottom") as "top" | "bottom" | "left" | "right"
+      gsap.set(element, { opacity: 0, scale: 0.95 })
+      animatePopover(element, true, side)
+    }
+
+    return () => observer.disconnect()
+  }, [combinedRef])
+
+  return (
+    <DropdownMenuPrimitive.SubContent
+      ref={combinedRef}
+      className={cn(
+        "z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-lg origin-[--radix-dropdown-menu-content-transform-origin]",
+        className
+      )}
+      {...props}
+    />
+  )
+})
 DropdownMenuSubContent.displayName =
   DropdownMenuPrimitive.SubContent.displayName
 
@@ -65,6 +98,9 @@ const DropdownMenuContent = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.Content>,
   DropdownMenuContentProps
 >(({ className, sideOffset = 4, customColor, customBorderColor, ...props }, ref) => {
+  const contentRef = useRef<HTMLDivElement>(null)
+  const combinedRef = (ref || contentRef) as React.RefObject<HTMLDivElement>
+
   const colorStyles = React.useMemo(() => {
     const styles: React.CSSProperties = {}
     if (customColor) {
@@ -76,14 +112,39 @@ const DropdownMenuContent = React.forwardRef<
     return styles
   }, [customColor, customBorderColor])
 
+  useEffect(() => {
+    const element = combinedRef.current
+    if (!element) return
+
+    const observer = new MutationObserver(() => {
+      const isOpen = element.getAttribute("data-state") === "open"
+      const side = (element.getAttribute("data-side") || "bottom") as "top" | "bottom" | "left" | "right"
+      animatePopover(element, isOpen, side)
+    })
+
+    observer.observe(element, {
+      attributes: true,
+      attributeFilter: ["data-state", "data-side"],
+    })
+
+    const isOpen = element.getAttribute("data-state") === "open"
+    if (isOpen) {
+      const side = (element.getAttribute("data-side") || "bottom") as "top" | "bottom" | "left" | "right"
+      gsap.set(element, { opacity: 0, scale: 0.95 })
+      animatePopover(element, true, side)
+    }
+
+    return () => observer.disconnect()
+  }, [combinedRef])
+
   return (
     <DropdownMenuPrimitive.Portal>
       <DropdownMenuPrimitive.Content
-        ref={ref}
+        ref={combinedRef}
         sideOffset={sideOffset}
         style={colorStyles}
         className={cn(
-          "z-50 max-h-[var(--radix-dropdown-menu-content-available-height)] min-w-[8rem] overflow-y-auto overflow-x-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-dropdown-menu-content-transform-origin]",
+          "z-50 max-h-[var(--radix-dropdown-menu-content-available-height)] min-w-[8rem] overflow-y-auto overflow-x-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-lg origin-[--radix-dropdown-menu-content-transform-origin]",
           className
         )}
         {...props}
@@ -125,6 +186,38 @@ const DropdownMenuItem = React.forwardRef<
 })
 DropdownMenuItem.displayName = DropdownMenuPrimitive.Item.displayName
 
+const CheckIndicator = () => {
+  const checkRef = useRef<SVGSVGElement>(null)
+
+  useEffect(() => {
+    const element = checkRef.current
+    if (!element) return
+
+    const parent = element.closest('[data-state]')
+    if (!parent) return
+
+    const observer = new MutationObserver(() => {
+      const isVisible = parent.getAttribute("data-state") === "checked"
+      animateCheck(element, isVisible)
+    })
+
+    observer.observe(parent, {
+      attributes: true,
+      attributeFilter: ["data-state"],
+    })
+
+    const isVisible = parent.getAttribute("data-state") === "checked"
+    if (isVisible) {
+      gsap.set(element, { opacity: 0, scale: 0.8 })
+      animateCheck(element, true)
+    }
+
+    return () => observer.disconnect()
+  }, [])
+
+  return <Check ref={checkRef} className="h-4 w-4" />
+}
+
 const DropdownMenuCheckboxItem = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.CheckboxItem>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.CheckboxItem>
@@ -140,7 +233,7 @@ const DropdownMenuCheckboxItem = React.forwardRef<
   >
     <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
       <DropdownMenuPrimitive.ItemIndicator>
-        <Check className="h-4 w-4 animate-in fade-in-0 zoom-in-95" />
+        <CheckIndicator />
       </DropdownMenuPrimitive.ItemIndicator>
     </span>
     {children}

@@ -67,7 +67,7 @@ export function Header({ className }: HeaderProps) {
       )}
     >
       <div className="container flex h-16 items-center justify-between px-4">
-        <Link href="/docs" className="flex items-center space-x-2">
+        <Link href="/" className="flex items-center space-x-2">
           <span className="text-xl font-bold">vyse UI</span>
         </Link>
 

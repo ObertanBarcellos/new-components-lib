@@ -38,7 +38,8 @@
     "allPropsAvailable": "Todas las propiedades disponibles para el componente",
     "hoverMe": "Pasa el mouse",
     "tooltipContent": "Información útil",
-    "icons": "Iconos"
+    "icons": "Iconos",
+    "credits": "Créditos"
   },
   "button": {
     "examples": {
@@ -78,6 +79,24 @@
     "description": "Explora todos los iconos disponibles de lucide-react",
     "icon": "icono",
     "iconsPlural": "iconos"
+  },
+  "credits": {
+    "title": "Créditos y Tecnologías",
+    "description": "Esta biblioteca fue construida utilizando las siguientes tecnologías y bibliotecas de código abierto. Agradecemos a todos los mantenedores y contribuidores.",
+    "viewDocs": "Ver documentación",
+    "categories": {
+      "uiLibraries": "Bibliotecas UI",
+      "styling": "Estilos",
+      "animations": "Animaciones",
+      "buildTools": "Herramientas de Build",
+      "testing": "Pruebas",
+      "utilities": "Utilidades",
+      "coreTechnologies": "Tecnologías Core"
+    },
+    "summary": {
+      "title": "Resumen",
+      "description": "Esta biblioteca utiliza {count} bibliotecas y tecnologías de código abierto para proporcionar una experiencia de desarrollo moderna y eficiente."
+    }
   }
 }
 

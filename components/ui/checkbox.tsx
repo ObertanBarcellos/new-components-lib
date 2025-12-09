@@ -1,14 +1,49 @@
 "use client"
 
 import * as React from "react"
+import { useEffect, useRef } from "react"
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
 import { Check } from "lucide-react"
+import { gsap } from "gsap"
+import { animateCheck } from "@/lib/gsap-animations"
 
 import { cn, getContrastTextColor } from "@/lib/utils"
 
 export interface CheckboxProps extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {
   customColor?: string
   customCheckedColor?: string
+}
+
+const CheckIndicator = () => {
+  const checkRef = useRef<SVGSVGElement>(null)
+
+  useEffect(() => {
+    const element = checkRef.current
+    if (!element) return
+
+    const parent = element.closest('[data-state]')
+    if (!parent) return
+
+    const observer = new MutationObserver(() => {
+      const isVisible = parent.getAttribute("data-state") === "checked"
+      animateCheck(element, isVisible)
+    })
+
+    observer.observe(parent, {
+      attributes: true,
+      attributeFilter: ["data-state"],
+    })
+
+    const isVisible = parent.getAttribute("data-state") === "checked"
+    if (isVisible) {
+      gsap.set(element, { opacity: 0, scale: 0.8 })
+      animateCheck(element, true)
+    }
+
+    return () => observer.disconnect()
+  }, [])
+
+  return <Check ref={checkRef} className="h-4 w-4" />
 }
 
 const Checkbox = React.forwardRef<
@@ -40,10 +75,8 @@ const Checkbox = React.forwardRef<
       )}
       {...props}
     >
-      <CheckboxPrimitive.Indicator
-        className={cn("grid place-content-center text-current animate-in fade-in-0 zoom-in-95")}
-      >
-        <Check className="h-4 w-4" />
+      <CheckboxPrimitive.Indicator className={cn("grid place-content-center text-current")}>
+        <CheckIndicator />
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
   )

@@ -1,6 +1,8 @@
 "use client"
 
 import * as React from "react"
+import { useEffect, useRef } from "react"
+import { gsap } from "gsap"
 import { CodeBlock } from "@/components/docs/code-block"
 import { PropsTable } from "@/components/docs/props-table"
 import { ComponentPreview } from "@/components/docs/component-preview"
@@ -11,6 +13,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { Badge } from "@/components/ui/badge"
 import { useTranslations } from "@/hooks/use-translations"
 import type { ComponentMetadata } from "@/lib/docs/components"
+import { fadeIn, fadeInUp, revealOnScroll, staggerFadeInUp } from "@/lib/gsap-animations"
 import * as Components from "@/components/ui"
 import { Heart, Loader2, Slash } from "lucide-react"
 import * as LucideIcons from "lucide-react"
@@ -1233,13 +1236,142 @@ export function ComponentPageContent({ component }: ComponentPageContentProps) {
   const { t, locale } = useTranslations()
   const [isMounted, setIsMounted] = React.useState(false)
 
+  // Refs para animações
+  const containerRef = useRef<HTMLDivElement>(null)
+  const breadcrumbRef = useRef<HTMLElement>(null)
+  const titleRef = useRef<HTMLHeadingElement>(null)
+  const badgeRef = useRef<HTMLDivElement>(null)
+  const descriptionRef = useRef<HTMLParagraphElement>(null)
+  const tabsListRef = useRef<HTMLDivElement>(null)
+  const examplesTitleRef = useRef<HTMLHeadingElement>(null)
+  const examplesContainerRef = useRef<HTMLDivElement>(null)
+  const variantsTitleRef = useRef<HTMLHeadingElement>(null)
+  const variantsGridRef = useRef<HTMLDivElement>(null)
+  const sizesTitleRef = useRef<HTMLHeadingElement>(null)
+  const sizesContainerRef = useRef<HTMLDivElement>(null)
+  const propsCardRef = useRef<HTMLDivElement>(null)
+
   React.useEffect(() => {
     setIsMounted(true)
   }, [])
 
+  // Animações GSAP
+  useEffect(() => {
+    if (!isMounted) return
+
+    const ctx = gsap.context(() => {
+      // Animações ao carregar (seção inicial)
+      if (breadcrumbRef.current) {
+        fadeIn(breadcrumbRef.current, 0)
+      }
+      if (titleRef.current) {
+        fadeInUp(titleRef.current, 0.1)
+      }
+      if (badgeRef.current) {
+        fadeInUp(badgeRef.current, 0.15)
+      }
+      if (descriptionRef.current) {
+        fadeInUp(descriptionRef.current, 0.2)
+      }
+
+      // Animações reveal on scroll para tabs
+      if (tabsListRef.current) {
+        revealOnScroll(tabsListRef.current, "up")
+      }
+
+      // Animações para seção de exemplos
+      if (examplesTitleRef.current) {
+        revealOnScroll(examplesTitleRef.current, "up")
+      }
+      if (examplesContainerRef.current && examplesContainerRef.current.children.length > 0) {
+        gsap.fromTo(
+          examplesContainerRef.current.children,
+          {
+            opacity: 0,
+            y: 40,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: examplesContainerRef.current,
+              start: "top 80%",
+              end: "bottom 20%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        )
+      }
+
+      // Animações para seção de variantes
+      if (variantsTitleRef.current) {
+        revealOnScroll(variantsTitleRef.current, "up")
+      }
+      if (variantsGridRef.current && variantsGridRef.current.children.length > 0) {
+        gsap.fromTo(
+          variantsGridRef.current.children,
+          {
+            opacity: 0,
+            y: 40,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: variantsGridRef.current,
+              start: "top 80%",
+              end: "bottom 20%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        )
+      }
+
+      // Animações para seção de sizes
+      if (sizesTitleRef.current) {
+        revealOnScroll(sizesTitleRef.current, "up")
+      }
+      if (sizesContainerRef.current && sizesContainerRef.current.children.length > 0) {
+        gsap.fromTo(
+          sizesContainerRef.current.children,
+          {
+            opacity: 0,
+            y: 40,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: sizesContainerRef.current,
+              start: "top 80%",
+              end: "bottom 20%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        )
+      }
+
+      // Animações para props table
+      if (propsCardRef.current) {
+        revealOnScroll(propsCardRef.current, "up")
+      }
+    }, containerRef)
+
+    return () => ctx.revert()
+  }, [isMounted, component])
+
   return (
-    <div className="space-y-8">
-      <Breadcrumb>
+    <div ref={containerRef} className="space-y-8">
+      <Breadcrumb ref={breadcrumbRef}>
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink href="/docs">{t("common.documentation")}</BreadcrumbLink>
@@ -1253,15 +1385,17 @@ export function ComponentPageContent({ component }: ComponentPageContentProps) {
 
       <div className="space-y-4">
         <div className="flex items-center gap-3">
-          <h1 className="text-4xl font-bold tracking-tight">{component.name}</h1>
-          <Badge variant="secondary">{component.category}</Badge>
+          <h1 ref={titleRef} className="text-4xl font-bold tracking-tight">{component.name}</h1>
+          <div ref={badgeRef}>
+            <Badge variant="secondary">{component.category}</Badge>
+          </div>
         </div>
-        <p className="text-xl text-muted-foreground">{component.description}</p>
+        <p ref={descriptionRef} className="text-xl text-muted-foreground">{component.description}</p>
       </div>
 
       {isMounted ? (
         <Tabs defaultValue="overview" className="w-full">
-        <TabsList>
+        <TabsList ref={tabsListRef}>
           <TabsTrigger value="overview">{t("common.overview")}</TabsTrigger>
           <TabsTrigger value="playground">{t("common.playground")}</TabsTrigger>
           <TabsTrigger value="props">{t("common.props")}</TabsTrigger>
@@ -1270,7 +1404,8 @@ export function ComponentPageContent({ component }: ComponentPageContentProps) {
         <TabsContent value="overview" className="space-y-6">
           {component.examples.length > 0 && (
             <div className="space-y-4">
-              <h2 className="text-2xl font-semibold">{t("common.examples")}</h2>
+              <h2 ref={examplesTitleRef} className="text-2xl font-semibold">{t("common.examples")}</h2>
+              <div ref={examplesContainerRef} className="space-y-6">
               {component.examples.map((example, index) => {
                 // Traduz títulos dos exemplos do botão
                 let translatedTitle = example.title
@@ -1458,13 +1593,14 @@ export function ComponentPageContent({ component }: ComponentPageContentProps) {
                   </div>
                 )
               })}
+              </div>
             </div>
           )}
 
           {component.variants && component.variants.length > 0 && (
             <div className="space-y-4">
-              <h2 className="text-2xl font-semibold">{t("common.variants")}</h2>
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              <h2 ref={variantsTitleRef} className="text-2xl font-semibold">{t("common.variants")}</h2>
+              <div ref={variantsGridRef} className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {component.variants.map((variant) => (
                   <Card key={variant.value}>
                     <CardHeader>
@@ -1484,8 +1620,8 @@ export function ComponentPageContent({ component }: ComponentPageContentProps) {
 
           {component.sizes && component.sizes.length > 0 && (
             <div className="space-y-4">
-              <h2 className="text-2xl font-semibold">{t("common.sizes")}</h2>
-              <div className="flex flex-wrap gap-4 items-center">
+              <h2 ref={sizesTitleRef} className="text-2xl font-semibold">{t("common.sizes")}</h2>
+              <div ref={sizesContainerRef} className="flex flex-wrap gap-4 items-center">
                 {component.sizes.map((size) => (
                   <div key={size.value} className="space-y-2">
                     <p className="text-sm font-medium">{size.name}</p>
@@ -1502,7 +1638,7 @@ export function ComponentPageContent({ component }: ComponentPageContentProps) {
         </TabsContent>
 
         <TabsContent value="props">
-          <Card>
+          <Card ref={propsCardRef}>
             <CardHeader>
               <CardTitle>{t("common.props")}</CardTitle>
               <CardDescription>

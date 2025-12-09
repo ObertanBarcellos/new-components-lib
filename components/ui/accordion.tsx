@@ -1,8 +1,10 @@
 "use client"
 
 import * as React from "react"
+import { useEffect, useRef } from "react"
 import * as AccordionPrimitive from "@radix-ui/react-accordion"
 import { ChevronDown } from "lucide-react"
+import { animateAccordion } from "@/lib/gsap-animations"
 
 import { cn } from "@/lib/utils"
 
@@ -60,19 +62,45 @@ AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName
 const AccordionContent = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>
->(({ className, children, ...props }, ref) => (
-  <AccordionPrimitive.Content
-    ref={ref}
-    className={cn(
-      "overflow-hidden text-sm transition-all",
-      "data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
-      className
-    )}
-    {...props}
-  >
-    <div className="pb-4 pt-0">{children}</div>
-  </AccordionPrimitive.Content>
-))
+>(({ className, children, ...props }, ref) => {
+  const contentRef = useRef<HTMLDivElement>(null)
+  const combinedRef = (ref || contentRef) as React.RefObject<HTMLDivElement>
+
+  useEffect(() => {
+    const element = combinedRef.current
+    if (!element) return
+
+    const observer = new MutationObserver(() => {
+      const isOpen = element.getAttribute("data-state") === "open"
+      animateAccordion(element, isOpen)
+    })
+
+    observer.observe(element, {
+      attributes: true,
+      attributeFilter: ["data-state"],
+    })
+
+    const isOpen = element.getAttribute("data-state") === "open"
+    if (isOpen) {
+      animateAccordion(element, true)
+    }
+
+    return () => observer.disconnect()
+  }, [combinedRef])
+
+  return (
+    <AccordionPrimitive.Content
+      ref={combinedRef}
+      className={cn(
+        "overflow-hidden text-sm",
+        className
+      )}
+      {...props}
+    >
+      <div className="pb-4 pt-0">{children}</div>
+    </AccordionPrimitive.Content>
+  )
+})
 
 AccordionContent.displayName = AccordionPrimitive.Content.displayName
 

@@ -1,10 +1,12 @@
 "use client"
 
 import * as React from "react"
+import { useEffect, useRef } from "react"
 import { X, PanelLeft } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "./button"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
+import { animateSidebar } from "@/lib/gsap-animations"
 
 export interface SidebarProps {
   open?: boolean
@@ -123,6 +125,19 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
       )
     }
 
+    const sidebarRef = useRef<HTMLElement>(null)
+
+    useEffect(() => {
+      const element = sidebarRef.current
+      if (!element) return
+
+      // Só animar em mobile (quando não está em lg:)
+      const isMobile = window.innerWidth < 1024
+      if (!isMobile) return
+
+      animateSidebar(element, open, side)
+    }, [open, side])
+
     return (
       <SidebarContext.Provider value={{ open, setOpen }}>
         <div className="relative">
@@ -137,11 +152,11 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
             </Button>
           )}
           <aside
+            ref={sidebarRef}
             className={cn(
-              "flex flex-col bg-background border-r border-border shadow-lg transition-transform duration-300 ease-in-out",
+              "flex flex-col bg-background border-r border-border shadow-lg",
               "fixed inset-y-0 z-50",
               side === "left" ? "left-0" : "right-0",
-              open ? "translate-x-0" : side === "left" ? "-translate-x-full" : "translate-x-full",
               "w-64 lg:translate-x-0 lg:static lg:shadow-none",
               className
             )}

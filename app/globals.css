@@ -63,11 +63,13 @@
     font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
   }
   
   /* Smooth scrolling */
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
   
   /* Better focus styles */
@@ -109,4 +111,27 @@
 
 .animate-accordion-up {
   animation: accordion-up 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Page transition styles */
+@layer utilities {
+  /* Enable hardware acceleration for 3D transforms */
+  .page-transition-container {
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    perspective: 1000px;
+    will-change: transform, opacity, filter;
+  }
+  
+  /* Smooth transitions for page elements */
+  .page-transition-container * {
+    transform-style: preserve-3d;
+  }
+  
+  /* Optimize particle rendering */
+  .particle {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+  }
 }

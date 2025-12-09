@@ -1,7 +1,10 @@
 "use client"
 
 import * as React from "react"
+import { useEffect, useRef } from "react"
 import * as TooltipPrimitive from "@radix-ui/react-tooltip"
+import { gsap } from "gsap"
+import { animatePopover } from "@/lib/gsap-animations"
 
 import { cn } from "@/lib/utils"
 
@@ -19,6 +22,9 @@ const TooltipContent = React.forwardRef<
   React.ElementRef<typeof TooltipPrimitive.Content>,
   TooltipContentProps
 >(({ className, sideOffset = 4, customColor, ...props }, ref) => {
+  const contentRef = useRef<HTMLDivElement>(null)
+  const combinedRef = (ref || contentRef) as React.RefObject<HTMLDivElement>
+
   const colorStyles = React.useMemo(() => {
     if (!customColor) return {}
     return {
@@ -28,13 +34,39 @@ const TooltipContent = React.forwardRef<
     } as React.CSSProperties
   }, [customColor])
 
+  useEffect(() => {
+    const element = combinedRef.current
+    if (!element) return
+
+    const observer = new MutationObserver(() => {
+      const isOpen = element.getAttribute("data-state") === "open"
+      const side = (element.getAttribute("data-side") || "bottom") as "top" | "bottom" | "left" | "right"
+      animatePopover(element, isOpen, side)
+    })
+
+    observer.observe(element, {
+      attributes: true,
+      attributeFilter: ["data-state", "data-side"],
+    })
+
+    // Animar estado inicial
+    const isOpen = element.getAttribute("data-state") === "open"
+    if (isOpen) {
+      const side = (element.getAttribute("data-side") || "bottom") as "top" | "bottom" | "left" | "right"
+      gsap.set(element, { opacity: 0, scale: 0.95 })
+      animatePopover(element, true, side)
+    }
+
+    return () => observer.disconnect()
+  }, [combinedRef])
+
   return (
     <TooltipPrimitive.Content
-      ref={ref}
+      ref={combinedRef}
       sideOffset={sideOffset}
       style={colorStyles}
       className={cn(
-        "z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-lg animate-in fade-in-0 zoom-in-95 duration-200 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-tooltip-content-transform-origin]",
+        "z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-lg origin-[--radix-tooltip-content-transform-origin]",
         className
       )}
       {...props}

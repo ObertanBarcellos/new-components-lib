@@ -62,6 +62,17 @@ export function Sidebar({ className }: SidebarProps) {
         >
           {t("common.icons")}
         </Link>
+        <Link
+          href="/docs/credits"
+          className={cn(
+            "flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors",
+            pathname === "/docs/credits"
+              ? "bg-primary text-primary-foreground"
+              : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+          )}
+        >
+          {t("common.credits")}
+        </Link>
 
         {categories.map((category) => {
           const categoryComponents = getComponentsByCategory(category)
