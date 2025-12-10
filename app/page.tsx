@@ -9,7 +9,7 @@ import { LanguageSwitcher } from "@/components/docs/language-switcher"
 import { Badge } from "@/components/ui/badge"
 
 // Versão da biblioteca
-const VERSION = "1.2.1"
+const VERSION = "1.2.2"
 
 export default function Home() {
   return (

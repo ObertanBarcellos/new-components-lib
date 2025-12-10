@@ -1,7 +1,12 @@
 {
   "name": "vyse-ui",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "description": "A comprehensive React component library built with Radix UI, Tailwind CSS, and TypeScript",
+  "author": "Obertan <obertanbarcellos@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/obertanbarcellos/new-components-lib"
+  },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -27,12 +32,7 @@
     "component-library",
     "design-system"
   ],
-  "author": "",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": ""
-  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",

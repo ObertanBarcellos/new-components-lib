@@ -1,11 +1,14 @@
 import * as React20 from 'react';
+import { useRef, useEffect } from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cva } from 'class-variance-authority';
-import { Check, Upload, File, Loader2, CheckCircle2, X, Star, Bold, Italic, Underline, Heading1, Heading2, Heading3, List, ListOrdered, Link as Link$1, Undo, Redo, PanelLeft, Search, Calendar as Calendar$1, Copy, ChevronDown, ChevronUp, ArrowLeft, ArrowRight, ChevronRight, Circle, ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon, LoaderCircle, OctagonX, TriangleAlert, Info, CircleCheck, MoreHorizontal, ChevronLeft } from 'lucide-react';
+import { Upload, File, Loader2, CheckCircle2, X, Star, Bold, Italic, Underline, Heading1, Heading2, Heading3, List, ListOrdered, Link as Link$1, Undo, Redo, PanelLeft, Search, Calendar as Calendar$1, Check, Copy, ChevronDown, ChevronUp, ArrowLeft, ArrowRight, ChevronRight, Circle, ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon, LoaderCircle, OctagonX, TriangleAlert, Info, CircleCheck, MoreHorizontal, ChevronLeft } from 'lucide-react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { jsxs, jsx, Fragment } from 'react/jsx-runtime';
 import * as SelectPrimitive from '@radix-ui/react-select';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
 import * as SwitchPrimitives from '@radix-ui/react-switch';
 import { useEditor, EditorContent } from '@tiptap/react';
@@ -451,6 +454,156 @@ var Textarea = React20.forwardRef(
   }
 );
 Textarea.displayName = "Textarea";
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
+var animateOverlay = (element, isOpen) => {
+  if (isOpen) {
+    return gsap.fromTo(
+      element,
+      { opacity: 0 },
+      {
+        opacity: 1,
+        duration: 0.2,
+        ease: "power2.out"
+      }
+    );
+  } else {
+    return gsap.to(element, {
+      opacity: 0,
+      duration: 0.2,
+      ease: "power2.in"
+    });
+  }
+};
+var animateModal = (element, isOpen, side) => {
+  const slide = { x: 0, y: 0 };
+  if (isOpen) {
+    return gsap.fromTo(
+      element,
+      __spreadValues({
+        opacity: 0,
+        scale: 0.95
+      }, slide),
+      {
+        opacity: 1,
+        scale: 1,
+        x: 0,
+        y: 0,
+        duration: 0.3,
+        ease: "power3.out"
+      }
+    );
+  } else {
+    return gsap.to(element, __spreadProps(__spreadValues({
+      opacity: 0,
+      scale: 0.95
+    }, slide), {
+      duration: 0.2,
+      ease: "power2.in"
+    }));
+  }
+};
+var animatePopover = (element, isOpen, side = "bottom") => {
+  const slideDirections = {
+    top: { y: -8, x: 0 },
+    bottom: { y: 8, x: 0 },
+    left: { x: -8, y: 0 },
+    right: { x: 8, y: 0 }
+  };
+  const slide = slideDirections[side];
+  if (isOpen) {
+    return gsap.fromTo(
+      element,
+      __spreadValues({
+        opacity: 0,
+        scale: 0.95
+      }, slide),
+      {
+        opacity: 1,
+        scale: 1,
+        x: 0,
+        y: 0,
+        duration: 0.2,
+        ease: "power2.out"
+      }
+    );
+  } else {
+    return gsap.to(element, __spreadProps(__spreadValues({
+      opacity: 0,
+      scale: 0.95
+    }, slide), {
+      duration: 0.15,
+      ease: "power2.in"
+    }));
+  }
+};
+var animateAccordion = (element, isOpen) => {
+  if (isOpen) {
+    gsap.set(element, { height: "auto" });
+    const height = element.offsetHeight;
+    gsap.set(element, { height: 0 });
+    return gsap.to(element, {
+      height,
+      opacity: 1,
+      duration: 0.3,
+      ease: "power2.out"
+    });
+  } else {
+    return gsap.to(element, {
+      height: 0,
+      opacity: 0,
+      duration: 0.25,
+      ease: "power2.in"
+    });
+  }
+};
+var animateSidebar = (element, isOpen, side = "left") => {
+  const direction = side === "left" ? -1 : 1;
+  if (isOpen) {
+    return gsap.fromTo(
+      element,
+      {
+        x: direction * element.offsetWidth
+      },
+      {
+        x: 0,
+        duration: 0.3,
+        ease: "power3.out"
+      }
+    );
+  } else {
+    return gsap.to(element, {
+      x: direction * element.offsetWidth,
+      duration: 0.25,
+      ease: "power2.in"
+    });
+  }
+};
+var animateCheck = (element, isVisible) => {
+  if (isVisible) {
+    return gsap.fromTo(
+      element,
+      {
+        opacity: 0,
+        scale: 0.8
+      },
+      {
+        opacity: 1,
+        scale: 1,
+        duration: 0.2,
+        ease: "back.out(1.7)"
+      }
+    );
+  } else {
+    return gsap.to(element, {
+      opacity: 0,
+      scale: 0.8,
+      duration: 0.15,
+      ease: "power2.in"
+    });
+  }
+};
 var Select = SelectPrimitive.Root;
 var SelectGroup = SelectPrimitive.Group;
 var SelectValue = SelectPrimitive.Value;
@@ -520,12 +673,34 @@ var SelectScrollDownButton = React20.forwardRef((_a, ref) => {
 SelectScrollDownButton.displayName = SelectPrimitive.ScrollDownButton.displayName;
 var SelectContent = React20.forwardRef((_a, ref) => {
   var _b = _a, { className, children, position = "popper" } = _b, props = __objRest(_b, ["className", "children", "position"]);
+  const contentRef = useRef(null);
+  const combinedRef = ref || contentRef;
+  useEffect(() => {
+    const element = combinedRef.current;
+    if (!element) return;
+    const observer = new MutationObserver(() => {
+      const isOpen2 = element.getAttribute("data-state") === "open";
+      const side = element.getAttribute("data-side") || "bottom";
+      animatePopover(element, isOpen2, side);
+    });
+    observer.observe(element, {
+      attributes: true,
+      attributeFilter: ["data-state", "data-side"]
+    });
+    const isOpen = element.getAttribute("data-state") === "open";
+    if (isOpen) {
+      const side = element.getAttribute("data-side") || "bottom";
+      gsap.set(element, { opacity: 0, scale: 0.95 });
+      animatePopover(element, true, side);
+    }
+    return () => observer.disconnect();
+  }, [combinedRef]);
   return /* @__PURE__ */ jsx(SelectPrimitive.Portal, { children: /* @__PURE__ */ jsxs(
     SelectPrimitive.Content,
     __spreadProps(__spreadValues({
-      ref,
+      ref: combinedRef,
       className: cn(
-        "relative z-50 max-h-[--radix-select-content-available-height] min-w-[8rem] overflow-y-auto overflow-x-hidden rounded-md border bg-popover text-popover-foreground shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-select-content-transform-origin]",
+        "relative z-50 max-h-[--radix-select-content-available-height] min-w-[8rem] overflow-y-auto overflow-x-hidden rounded-md border bg-popover text-popover-foreground shadow-lg origin-[--radix-select-content-transform-origin]",
         position === "popper" && "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
         className
       ),
@@ -560,6 +735,30 @@ var SelectLabel = React20.forwardRef((_a, ref) => {
   );
 });
 SelectLabel.displayName = SelectPrimitive.Label.displayName;
+var SelectCheckIndicator = () => {
+  const checkRef = useRef(null);
+  useEffect(() => {
+    const element = checkRef.current;
+    if (!element) return;
+    const parent = element.closest("[data-state]");
+    if (!parent) return;
+    const observer = new MutationObserver(() => {
+      const isVisible2 = parent.getAttribute("data-state") === "checked";
+      animateCheck(element, isVisible2);
+    });
+    observer.observe(parent, {
+      attributes: true,
+      attributeFilter: ["data-state"]
+    });
+    const isVisible = parent.getAttribute("data-state") === "checked";
+    if (isVisible) {
+      gsap.set(element, { opacity: 0, scale: 0.8 });
+      animateCheck(element, true);
+    }
+    return () => observer.disconnect();
+  }, []);
+  return /* @__PURE__ */ jsx(Check, { ref: checkRef, className: "h-4 w-4" });
+};
 var SelectItem = React20.forwardRef((_a, ref) => {
   var _b = _a, { className, children } = _b, props = __objRest(_b, ["className", "children"]);
   return /* @__PURE__ */ jsxs(
@@ -572,7 +771,7 @@ var SelectItem = React20.forwardRef((_a, ref) => {
       )
     }, props), {
       children: [
-        /* @__PURE__ */ jsx("span", { className: "absolute left-2 flex h-3.5 w-3.5 items-center justify-center", children: /* @__PURE__ */ jsx(SelectPrimitive.ItemIndicator, { children: /* @__PURE__ */ jsx(Check, { className: "h-4 w-4 animate-in fade-in-0 zoom-in-95" }) }) }),
+        /* @__PURE__ */ jsx("span", { className: "absolute left-2 flex h-3.5 w-3.5 items-center justify-center", children: /* @__PURE__ */ jsx(SelectPrimitive.ItemIndicator, { children: /* @__PURE__ */ jsx(SelectCheckIndicator, {}) }) }),
         /* @__PURE__ */ jsx(SelectPrimitive.ItemText, { children })
       ]
     })
@@ -590,6 +789,30 @@ var SelectSeparator = React20.forwardRef((_a, ref) => {
   );
 });
 SelectSeparator.displayName = SelectPrimitive.Separator.displayName;
+var CheckIndicator = () => {
+  const checkRef = useRef(null);
+  useEffect(() => {
+    const element = checkRef.current;
+    if (!element) return;
+    const parent = element.closest("[data-state]");
+    if (!parent) return;
+    const observer = new MutationObserver(() => {
+      const isVisible2 = parent.getAttribute("data-state") === "checked";
+      animateCheck(element, isVisible2);
+    });
+    observer.observe(parent, {
+      attributes: true,
+      attributeFilter: ["data-state"]
+    });
+    const isVisible = parent.getAttribute("data-state") === "checked";
+    if (isVisible) {
+      gsap.set(element, { opacity: 0, scale: 0.8 });
+      animateCheck(element, true);
+    }
+    return () => observer.disconnect();
+  }, []);
+  return /* @__PURE__ */ jsx(Check, { ref: checkRef, className: "h-4 w-4" });
+};
 var Checkbox = React20.forwardRef((_a, ref) => {
   var _b = _a, { className, customColor, customCheckedColor } = _b, props = __objRest(_b, ["className", "customColor", "customCheckedColor"]);
   const colorStyles = React20.useMemo(() => {
@@ -615,13 +838,7 @@ var Checkbox = React20.forwardRef((_a, ref) => {
         className
       )
     }, props), {
-      children: /* @__PURE__ */ jsx(
-        CheckboxPrimitive.Indicator,
-        {
-          className: cn("grid place-content-center text-current animate-in fade-in-0 zoom-in-95"),
-          children: /* @__PURE__ */ jsx(Check, { className: "h-4 w-4" })
-        }
-      )
+      children: /* @__PURE__ */ jsx(CheckboxPrimitive.Indicator, { className: cn("grid place-content-center text-current"), children: /* @__PURE__ */ jsx(CheckIndicator, {}) })
     })
   );
 });
@@ -1167,7 +1384,8 @@ var RichTextEditor = React20.forwardRef(
       toolbarClassName,
       contentClassName,
       minHeight = "200px",
-      maxHeight
+      maxHeight,
+      minWidth = "200px"
     } = _b, props = __objRest(_b, [
       "value",
       "defaultValue",
@@ -1179,7 +1397,8 @@ var RichTextEditor = React20.forwardRef(
       "toolbarClassName",
       "contentClassName",
       "minHeight",
-      "maxHeight"
+      "maxHeight",
+      "minWidth"
     ]);
     const [isMounted, setIsMounted] = React20.useState(false);
     React20.useEffect(() => {
@@ -1203,36 +1422,18 @@ var RichTextEditor = React20.forwardRef(
             placeholder
           })
         ],
-        content: controlledValue !== void 0 ? controlledValue : defaultValue,
+        content: controlledValue !== void 0 ? controlledValue : defaultValue || "",
         editable,
         immediatelyRender: false,
+        autofocus: false,
         onUpdate: ({ editor: editor2 }) => {
           onChange == null ? void 0 : onChange(editor2.getHTML());
         }
       },
       [isMounted]
     );
-    React20.useEffect(() => {
-      if (editor && controlledValue !== void 0 && editor.getHTML() !== controlledValue) {
-        editor.commands.setContent(controlledValue);
-      }
-    }, [controlledValue, editor]);
-    if (!isMounted || !editor) {
-      return /* @__PURE__ */ jsx(
-        "div",
-        __spreadProps(__spreadValues({
-          className: cn("border rounded-lg overflow-hidden", className),
-          style: {
-            minHeight,
-            maxHeight,
-            padding: "1rem"
-          }
-        }, props), {
-          children: /* @__PURE__ */ jsx("div", { className: "text-muted-foreground text-sm", children: placeholder })
-        })
-      );
-    }
     const setLink = React20.useCallback(() => {
+      if (!editor) return;
       const previousUrl = editor.getAttributes("link").href;
       const url = window.prompt("URL", previousUrl);
       if (url === null) {
@@ -1244,174 +1445,209 @@ var RichTextEditor = React20.forwardRef(
       }
       editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
     }, [editor]);
-    return /* @__PURE__ */ jsxs("div", __spreadProps(__spreadValues({ ref, className: cn("border rounded-lg overflow-hidden", className) }, props), { children: [
-      showToolbar && editable && /* @__PURE__ */ jsxs(
-        "div",
-        {
-          className: cn(
-            "flex flex-wrap items-center gap-1 border-b bg-muted/50 p-2",
-            toolbarClassName
-          ),
-          children: [
-            /* @__PURE__ */ jsx(
-              Button,
-              {
-                type: "button",
-                variant: "ghost",
-                size: "icon-sm",
-                onClick: () => editor.chain().focus().toggleBold().run(),
-                disabled: !editor.can().chain().focus().toggleBold().run(),
-                className: cn(editor.isActive("bold") && "bg-accent"),
-                "aria-label": "Bold",
-                children: /* @__PURE__ */ jsx(Bold, { className: "h-4 w-4" })
-              }
-            ),
-            /* @__PURE__ */ jsx(
-              Button,
-              {
-                type: "button",
-                variant: "ghost",
-                size: "icon-sm",
-                onClick: () => editor.chain().focus().toggleItalic().run(),
-                disabled: !editor.can().chain().focus().toggleItalic().run(),
-                className: cn(editor.isActive("italic") && "bg-accent"),
-                "aria-label": "Italic",
-                children: /* @__PURE__ */ jsx(Italic, { className: "h-4 w-4" })
-              }
-            ),
-            /* @__PURE__ */ jsx(
-              Button,
-              {
-                type: "button",
-                variant: "ghost",
-                size: "icon-sm",
-                onClick: () => editor.chain().focus().toggleStrike().run(),
-                disabled: !editor.can().chain().focus().toggleStrike().run(),
-                className: cn(editor.isActive("strike") && "bg-accent"),
-                "aria-label": "Strikethrough",
-                children: /* @__PURE__ */ jsx(Underline, { className: "h-4 w-4" })
-              }
-            ),
-            /* @__PURE__ */ jsx("div", { className: "h-6 w-px bg-border mx-1" }),
-            /* @__PURE__ */ jsx(
-              Button,
-              {
-                type: "button",
-                variant: "ghost",
-                size: "icon-sm",
-                onClick: () => editor.chain().focus().toggleHeading({ level: 1 }).run(),
-                className: cn(editor.isActive("heading", { level: 1 }) && "bg-accent"),
-                "aria-label": "Heading 1",
-                children: /* @__PURE__ */ jsx(Heading1, { className: "h-4 w-4" })
-              }
-            ),
-            /* @__PURE__ */ jsx(
-              Button,
-              {
-                type: "button",
-                variant: "ghost",
-                size: "icon-sm",
-                onClick: () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
-                className: cn(editor.isActive("heading", { level: 2 }) && "bg-accent"),
-                "aria-label": "Heading 2",
-                children: /* @__PURE__ */ jsx(Heading2, { className: "h-4 w-4" })
-              }
-            ),
-            /* @__PURE__ */ jsx(
-              Button,
-              {
-                type: "button",
-                variant: "ghost",
-                size: "icon-sm",
-                onClick: () => editor.chain().focus().toggleHeading({ level: 3 }).run(),
-                className: cn(editor.isActive("heading", { level: 3 }) && "bg-accent"),
-                "aria-label": "Heading 3",
-                children: /* @__PURE__ */ jsx(Heading3, { className: "h-4 w-4" })
-              }
-            ),
-            /* @__PURE__ */ jsx("div", { className: "h-6 w-px bg-border mx-1" }),
-            /* @__PURE__ */ jsx(
-              Button,
-              {
-                type: "button",
-                variant: "ghost",
-                size: "icon-sm",
-                onClick: () => editor.chain().focus().toggleBulletList().run(),
-                className: cn(editor.isActive("bulletList") && "bg-accent"),
-                "aria-label": "Bullet List",
-                children: /* @__PURE__ */ jsx(List, { className: "h-4 w-4" })
-              }
-            ),
-            /* @__PURE__ */ jsx(
-              Button,
-              {
-                type: "button",
-                variant: "ghost",
-                size: "icon-sm",
-                onClick: () => editor.chain().focus().toggleOrderedList().run(),
-                className: cn(editor.isActive("orderedList") && "bg-accent"),
-                "aria-label": "Ordered List",
-                children: /* @__PURE__ */ jsx(ListOrdered, { className: "h-4 w-4" })
-              }
-            ),
-            /* @__PURE__ */ jsx("div", { className: "h-6 w-px bg-border mx-1" }),
-            /* @__PURE__ */ jsx(
-              Button,
-              {
-                type: "button",
-                variant: "ghost",
-                size: "icon-sm",
-                onClick: setLink,
-                className: cn(editor.isActive("link") && "bg-accent"),
-                "aria-label": "Link",
-                children: /* @__PURE__ */ jsx(Link$1, { className: "h-4 w-4" })
-              }
-            ),
-            /* @__PURE__ */ jsx("div", { className: "h-6 w-px bg-border mx-1" }),
-            /* @__PURE__ */ jsx(
-              Button,
-              {
-                type: "button",
-                variant: "ghost",
-                size: "icon-sm",
-                onClick: () => editor.chain().focus().undo().run(),
-                disabled: !editor.can().chain().focus().undo().run(),
-                "aria-label": "Undo",
-                children: /* @__PURE__ */ jsx(Undo, { className: "h-4 w-4" })
-              }
-            ),
-            /* @__PURE__ */ jsx(
-              Button,
-              {
-                type: "button",
-                variant: "ghost",
-                size: "icon-sm",
-                onClick: () => editor.chain().focus().redo().run(),
-                disabled: !editor.can().chain().focus().redo().run(),
-                "aria-label": "Redo",
-                children: /* @__PURE__ */ jsx(Redo, { className: "h-4 w-4" })
-              }
-            )
-          ]
+    React20.useEffect(() => {
+      if (editor && controlledValue !== void 0 && editor.getHTML() !== controlledValue) {
+        const isFocused = editor.isFocused;
+        editor.commands.setContent(controlledValue, { emitUpdate: false });
+        if (isFocused) {
+          editor.commands.focus();
         }
-      ),
-      /* @__PURE__ */ jsx(
-        EditorContent,
-        {
-          editor,
-          className: cn(
-            "prose prose-sm dark:prose-invert max-w-none focus:outline-none [&_p]:my-2 [&_ul]:my-2 [&_ol]:my-2 [&_h1]:my-4 [&_h2]:my-3 [&_h3]:my-2",
-            contentClassName
-          ),
+      }
+    }, [controlledValue, editor]);
+    if (!isMounted || !editor) {
+      return /* @__PURE__ */ jsx(
+        "div",
+        __spreadProps(__spreadValues({
+          ref,
+          className: cn("border rounded-lg overflow-hidden", className),
           style: {
             minHeight,
             maxHeight,
-            overflowY: maxHeight ? "auto" : "visible",
+            minWidth,
             padding: "1rem"
           }
-        }
-      )
-    ] }));
+        }, props), {
+          children: /* @__PURE__ */ jsx("div", { className: "text-muted-foreground text-sm", children: placeholder })
+        })
+      );
+    }
+    return /* @__PURE__ */ jsxs(
+      "div",
+      __spreadProps(__spreadValues({
+        ref,
+        className: cn("border rounded-lg overflow-hidden", className),
+        style: { minWidth }
+      }, props), {
+        children: [
+          showToolbar && editable && /* @__PURE__ */ jsxs(
+            "div",
+            {
+              className: cn(
+                "flex flex-wrap items-center gap-1 border-b bg-muted/50 p-2",
+                toolbarClassName
+              ),
+              children: [
+                /* @__PURE__ */ jsx(
+                  Button,
+                  {
+                    type: "button",
+                    variant: "ghost",
+                    size: "icon-sm",
+                    onClick: () => editor.chain().focus().toggleBold().run(),
+                    disabled: !editor.can().chain().focus().toggleBold().run(),
+                    className: cn(editor.isActive("bold") && "bg-accent"),
+                    "aria-label": "Bold",
+                    children: /* @__PURE__ */ jsx(Bold, { className: "h-4 w-4" })
+                  }
+                ),
+                /* @__PURE__ */ jsx(
+                  Button,
+                  {
+                    type: "button",
+                    variant: "ghost",
+                    size: "icon-sm",
+                    onClick: () => editor.chain().focus().toggleItalic().run(),
+                    disabled: !editor.can().chain().focus().toggleItalic().run(),
+                    className: cn(editor.isActive("italic") && "bg-accent"),
+                    "aria-label": "Italic",
+                    children: /* @__PURE__ */ jsx(Italic, { className: "h-4 w-4" })
+                  }
+                ),
+                /* @__PURE__ */ jsx(
+                  Button,
+                  {
+                    type: "button",
+                    variant: "ghost",
+                    size: "icon-sm",
+                    onClick: () => editor.chain().focus().toggleStrike().run(),
+                    disabled: !editor.can().chain().focus().toggleStrike().run(),
+                    className: cn(editor.isActive("strike") && "bg-accent"),
+                    "aria-label": "Strikethrough",
+                    children: /* @__PURE__ */ jsx(Underline, { className: "h-4 w-4" })
+                  }
+                ),
+                /* @__PURE__ */ jsx("div", { className: "h-6 w-px bg-border mx-1" }),
+                /* @__PURE__ */ jsx(
+                  Button,
+                  {
+                    type: "button",
+                    variant: "ghost",
+                    size: "icon-sm",
+                    onClick: () => editor.chain().focus().toggleHeading({ level: 1 }).run(),
+                    className: cn(editor.isActive("heading", { level: 1 }) && "bg-accent"),
+                    "aria-label": "Heading 1",
+                    children: /* @__PURE__ */ jsx(Heading1, { className: "h-4 w-4" })
+                  }
+                ),
+                /* @__PURE__ */ jsx(
+                  Button,
+                  {
+                    type: "button",
+                    variant: "ghost",
+                    size: "icon-sm",
+                    onClick: () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
+                    className: cn(editor.isActive("heading", { level: 2 }) && "bg-accent"),
+                    "aria-label": "Heading 2",
+                    children: /* @__PURE__ */ jsx(Heading2, { className: "h-4 w-4" })
+                  }
+                ),
+                /* @__PURE__ */ jsx(
+                  Button,
+                  {
+                    type: "button",
+                    variant: "ghost",
+                    size: "icon-sm",
+                    onClick: () => editor.chain().focus().toggleHeading({ level: 3 }).run(),
+                    className: cn(editor.isActive("heading", { level: 3 }) && "bg-accent"),
+                    "aria-label": "Heading 3",
+                    children: /* @__PURE__ */ jsx(Heading3, { className: "h-4 w-4" })
+                  }
+                ),
+                /* @__PURE__ */ jsx("div", { className: "h-6 w-px bg-border mx-1" }),
+                /* @__PURE__ */ jsx(
+                  Button,
+                  {
+                    type: "button",
+                    variant: "ghost",
+                    size: "icon-sm",
+                    onClick: () => editor.chain().focus().toggleBulletList().run(),
+                    className: cn(editor.isActive("bulletList") && "bg-accent"),
+                    "aria-label": "Bullet List",
+                    children: /* @__PURE__ */ jsx(List, { className: "h-4 w-4" })
+                  }
+                ),
+                /* @__PURE__ */ jsx(
+                  Button,
+                  {
+                    type: "button",
+                    variant: "ghost",
+                    size: "icon-sm",
+                    onClick: () => editor.chain().focus().toggleOrderedList().run(),
+                    className: cn(editor.isActive("orderedList") && "bg-accent"),
+                    "aria-label": "Ordered List",
+                    children: /* @__PURE__ */ jsx(ListOrdered, { className: "h-4 w-4" })
+                  }
+                ),
+                /* @__PURE__ */ jsx("div", { className: "h-6 w-px bg-border mx-1" }),
+                /* @__PURE__ */ jsx(
+                  Button,
+                  {
+                    type: "button",
+                    variant: "ghost",
+                    size: "icon-sm",
+                    onClick: setLink,
+                    className: cn(editor.isActive("link") && "bg-accent"),
+                    "aria-label": "Link",
+                    children: /* @__PURE__ */ jsx(Link$1, { className: "h-4 w-4" })
+                  }
+                ),
+                /* @__PURE__ */ jsx("div", { className: "h-6 w-px bg-border mx-1" }),
+                /* @__PURE__ */ jsx(
+                  Button,
+                  {
+                    type: "button",
+                    variant: "ghost",
+                    size: "icon-sm",
+                    onClick: () => editor.chain().focus().undo().run(),
+                    disabled: !editor.can().chain().focus().undo().run(),
+                    "aria-label": "Undo",
+                    children: /* @__PURE__ */ jsx(Undo, { className: "h-4 w-4" })
+                  }
+                ),
+                /* @__PURE__ */ jsx(
+                  Button,
+                  {
+                    type: "button",
+                    variant: "ghost",
+                    size: "icon-sm",
+                    onClick: () => editor.chain().focus().redo().run(),
+                    disabled: !editor.can().chain().focus().redo().run(),
+                    "aria-label": "Redo",
+                    children: /* @__PURE__ */ jsx(Redo, { className: "h-4 w-4" })
+                  }
+                )
+              ]
+            }
+          ),
+          /* @__PURE__ */ jsx("div", { style: { minWidth }, children: /* @__PURE__ */ jsx(
+            EditorContent,
+            {
+              editor,
+              className: cn(
+                "prose prose-sm dark:prose-invert max-w-none focus:outline-none [&_p]:my-2 [&_ul]:my-2 [&_ol]:my-2 [&_h1]:my-4 [&_h2]:my-3 [&_h3]:my-2 [&_.ProseMirror]:outline-none [&_.ProseMirror]:min-h-[inherit]",
+                contentClassName
+              ),
+              style: {
+                minHeight,
+                maxHeight,
+                overflowY: maxHeight ? "auto" : "visible",
+                padding: "1rem"
+              }
+            }
+          ) })
+        ]
+      })
+    );
   }
 );
 RichTextEditor.displayName = "RichTextEditor";
@@ -1735,7 +1971,14 @@ var CircularProgress = React20.forwardRef(
   }
 );
 CircularProgress.displayName = "CircularProgress";
-var Accordion = AccordionPrimitive.Root;
+var Accordion = React20.forwardRef((_a, ref) => {
+  var _b = _a, { type = "single", collapsible = true } = _b, props = __objRest(_b, ["type", "collapsible"]);
+  const rootProps = __spreadValues(__spreadProps(__spreadValues({}, props), {
+    type
+  }), type === "single" ? { collapsible } : {});
+  return /* @__PURE__ */ jsx(AccordionPrimitive.Root, __spreadValues({ ref }, rootProps));
+});
+Accordion.displayName = "Accordion";
 var AccordionItem = React20.forwardRef((_a, ref) => {
   var _b = _a, { className } = _b, props = __objRest(_b, ["className"]);
   return /* @__PURE__ */ jsx(
@@ -1754,13 +1997,14 @@ var AccordionTrigger = React20.forwardRef((_a, ref) => {
     __spreadProps(__spreadValues({
       ref,
       className: cn(
-        "flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180",
+        "flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline",
+        "data-[state=open]:[&>svg]:rotate-180",
         className
       )
     }, props), {
       children: [
         children,
-        /* @__PURE__ */ jsx(ChevronDown, { className: "h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200" })
+        /* @__PURE__ */ jsx(ChevronDown, { className: "h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-300 ease-in-out" })
       ]
     })
   ) });
@@ -1768,13 +2012,35 @@ var AccordionTrigger = React20.forwardRef((_a, ref) => {
 AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName;
 var AccordionContent = React20.forwardRef((_a, ref) => {
   var _b = _a, { className, children } = _b, props = __objRest(_b, ["className", "children"]);
+  const contentRef = useRef(null);
+  const combinedRef = ref || contentRef;
+  useEffect(() => {
+    const element = combinedRef.current;
+    if (!element) return;
+    const observer = new MutationObserver(() => {
+      const isOpen2 = element.getAttribute("data-state") === "open";
+      animateAccordion(element, isOpen2);
+    });
+    observer.observe(element, {
+      attributes: true,
+      attributeFilter: ["data-state"]
+    });
+    const isOpen = element.getAttribute("data-state") === "open";
+    if (isOpen) {
+      animateAccordion(element, true);
+    }
+    return () => observer.disconnect();
+  }, [combinedRef]);
   return /* @__PURE__ */ jsx(
     AccordionPrimitive.Content,
     __spreadProps(__spreadValues({
-      ref,
-      className: "overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+      ref: combinedRef,
+      className: cn(
+        "overflow-hidden text-sm",
+        className
+      )
     }, props), {
-      children: /* @__PURE__ */ jsx("div", { className: cn("pb-4 pt-0", className), children })
+      children: /* @__PURE__ */ jsx("div", { className: "pb-4 pt-0", children })
     })
   );
 });
@@ -1867,6 +2133,7 @@ var Sidebar = React20.forwardRef(
                 "w-80"
               ),
               children: [
+                /* @__PURE__ */ jsx(DialogPrimitive2.Title, { className: "sr-only", children: "Sidebar" }),
                 showCloseButton && /* @__PURE__ */ jsx("div", { className: "flex items-center justify-end p-4 border-b", children: /* @__PURE__ */ jsx(DialogPrimitive2.Close, { asChild: true, children: /* @__PURE__ */ jsx(Button, { variant: "ghost", size: "icon-sm", className: "h-8 w-8", children: /* @__PURE__ */ jsx(X, { className: "h-4 w-4" }) }) }) }),
                 /* @__PURE__ */ jsx("div", { className: "flex-1 overflow-y-auto p-4", children })
               ]
@@ -1875,6 +2142,14 @@ var Sidebar = React20.forwardRef(
         ] }) })
       ] });
     }
+    const sidebarRef = useRef(null);
+    useEffect(() => {
+      const element = sidebarRef.current;
+      if (!element) return;
+      const isMobile = window.innerWidth < 1024;
+      if (!isMobile) return;
+      animateSidebar(element, open, side);
+    }, [open, side]);
     return /* @__PURE__ */ jsx(SidebarContext.Provider, { value: { open, setOpen }, children: /* @__PURE__ */ jsxs("div", { className: "relative", children: [
       trigger && /* @__PURE__ */ jsx(
         Button,
@@ -1889,10 +2164,11 @@ var Sidebar = React20.forwardRef(
       /* @__PURE__ */ jsx(
         "aside",
         {
+          ref: sidebarRef,
           className: cn(
-            "fixed inset-y-0 z-50 flex flex-col bg-background border-r border-border shadow-lg transition-transform duration-300 ease-in-out",
+            "flex flex-col bg-background border-r border-border shadow-lg",
+            "fixed inset-y-0 z-50",
             side === "left" ? "left-0" : "right-0",
-            open ? "translate-x-0" : side === "left" ? "-translate-x-full" : "translate-x-full",
             "w-64 lg:translate-x-0 lg:static lg:shadow-none",
             className
           ),
@@ -2636,6 +2912,9 @@ var DialogPortal = DialogPrimitive2.Portal;
 var DialogClose = DialogPrimitive2.Close;
 var DialogOverlay = React20.forwardRef((_a, ref) => {
   var _b = _a, { className, customOverlayColor } = _b, props = __objRest(_b, ["className", "customOverlayColor"]);
+  const overlayRef = useRef(null);
+  React20.useRef(null);
+  const combinedRef = ref || overlayRef;
   const colorStyles = React20.useMemo(() => {
     const styles = {};
     if (customOverlayColor) {
@@ -2643,13 +2922,31 @@ var DialogOverlay = React20.forwardRef((_a, ref) => {
     }
     return styles;
   }, [customOverlayColor]);
+  useEffect(() => {
+    const element = combinedRef.current;
+    if (!element) return;
+    const observer = new MutationObserver(() => {
+      const isOpen2 = element.getAttribute("data-state") === "open";
+      animateOverlay(element, isOpen2);
+    });
+    observer.observe(element, {
+      attributes: true,
+      attributeFilter: ["data-state"]
+    });
+    const isOpen = element.getAttribute("data-state") === "open";
+    if (isOpen) {
+      gsap.set(element, { opacity: 0 });
+      animateOverlay(element, true);
+    }
+    return () => observer.disconnect();
+  }, [combinedRef]);
   return /* @__PURE__ */ jsx(
     DialogPrimitive2.Overlay,
     __spreadValues({
-      ref,
+      ref: combinedRef,
       style: colorStyles,
       className: cn(
-        "fixed inset-0 z-50 bg-black/80 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+        "fixed inset-0 z-50 bg-black/80 backdrop-blur-sm",
         className
       )
     }, props)
@@ -2658,6 +2955,9 @@ var DialogOverlay = React20.forwardRef((_a, ref) => {
 DialogOverlay.displayName = DialogPrimitive2.Overlay.displayName;
 var DialogContent = React20.forwardRef((_a, ref) => {
   var _b = _a, { className, children, customBorderColor, customBgColor, customOverlayColor } = _b, props = __objRest(_b, ["className", "children", "customBorderColor", "customBgColor", "customOverlayColor"]);
+  const contentRef = useRef(null);
+  React20.useRef(null);
+  const combinedRef = ref || contentRef;
   const colorStyles = React20.useMemo(() => {
     const styles = {};
     if (customBorderColor) {
@@ -2668,15 +2968,33 @@ var DialogContent = React20.forwardRef((_a, ref) => {
     }
     return styles;
   }, [customBorderColor, customBgColor]);
+  useEffect(() => {
+    const element = combinedRef.current;
+    if (!element) return;
+    const observer = new MutationObserver(() => {
+      const isOpen2 = element.getAttribute("data-state") === "open";
+      animateModal(element, isOpen2);
+    });
+    observer.observe(element, {
+      attributes: true,
+      attributeFilter: ["data-state"]
+    });
+    const isOpen = element.getAttribute("data-state") === "open";
+    if (isOpen) {
+      gsap.set(element, { opacity: 0, scale: 0.95 });
+      animateModal(element, true);
+    }
+    return () => observer.disconnect();
+  }, [combinedRef]);
   return /* @__PURE__ */ jsxs(DialogPortal, { children: [
     /* @__PURE__ */ jsx(DialogOverlay, { customOverlayColor }),
     /* @__PURE__ */ jsxs(
       DialogPrimitive2.Content,
       __spreadProps(__spreadValues({
-        ref,
+        ref: combinedRef,
         style: colorStyles,
         className: cn(
-          "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-xl duration-300 ease-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg",
+          "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-xl sm:rounded-lg",
           className
         )
       }, props), {
@@ -3032,6 +3350,8 @@ var Popover = PopoverPrimitive.Root;
 var PopoverTrigger = PopoverPrimitive.Trigger;
 var PopoverContent = React20.forwardRef((_a, ref) => {
   var _b = _a, { className, align = "center", sideOffset = 4, customColor, customBorderColor } = _b, props = __objRest(_b, ["className", "align", "sideOffset", "customColor", "customBorderColor"]);
+  const contentRef = useRef(null);
+  const combinedRef = ref || contentRef;
   const colorStyles = React20.useMemo(() => {
     const styles = {};
     if (customColor) {
@@ -3042,15 +3362,35 @@ var PopoverContent = React20.forwardRef((_a, ref) => {
     }
     return styles;
   }, [customColor, customBorderColor]);
+  useEffect(() => {
+    const element = combinedRef.current;
+    if (!element) return;
+    const observer = new MutationObserver(() => {
+      const isOpen2 = element.getAttribute("data-state") === "open";
+      const side = element.getAttribute("data-side") || "bottom";
+      animatePopover(element, isOpen2, side);
+    });
+    observer.observe(element, {
+      attributes: true,
+      attributeFilter: ["data-state", "data-side"]
+    });
+    const isOpen = element.getAttribute("data-state") === "open";
+    if (isOpen) {
+      const side = element.getAttribute("data-side") || "bottom";
+      gsap.set(element, { opacity: 0, scale: 0.95 });
+      animatePopover(element, true, side);
+    }
+    return () => observer.disconnect();
+  }, [combinedRef]);
   return /* @__PURE__ */ jsx(PopoverPrimitive.Portal, { children: /* @__PURE__ */ jsx(
     PopoverPrimitive.Content,
     __spreadValues({
-      ref,
+      ref: combinedRef,
       align,
       sideOffset,
       style: colorStyles,
       className: cn(
-        "z-50 w-72 rounded-md border bg-popover p-4 text-popover-foreground shadow-lg outline-none duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-popover-content-transform-origin]",
+        "z-50 w-72 rounded-md border bg-popover p-4 text-popover-foreground shadow-lg outline-none origin-[--radix-popover-content-transform-origin]",
         className
       )
     }, props)
@@ -3062,6 +3402,8 @@ var Tooltip = TooltipPrimitive.Root;
 var TooltipTrigger = TooltipPrimitive.Trigger;
 var TooltipContent = React20.forwardRef((_a, ref) => {
   var _b = _a, { className, sideOffset = 4, customColor } = _b, props = __objRest(_b, ["className", "sideOffset", "customColor"]);
+  const contentRef = useRef(null);
+  const combinedRef = ref || contentRef;
   const colorStyles = React20.useMemo(() => {
     if (!customColor) return {};
     return {
@@ -3070,14 +3412,34 @@ var TooltipContent = React20.forwardRef((_a, ref) => {
       color: "#ffffff"
     };
   }, [customColor]);
+  useEffect(() => {
+    const element = combinedRef.current;
+    if (!element) return;
+    const observer = new MutationObserver(() => {
+      const isOpen2 = element.getAttribute("data-state") === "open";
+      const side = element.getAttribute("data-side") || "bottom";
+      animatePopover(element, isOpen2, side);
+    });
+    observer.observe(element, {
+      attributes: true,
+      attributeFilter: ["data-state", "data-side"]
+    });
+    const isOpen = element.getAttribute("data-state") === "open";
+    if (isOpen) {
+      const side = element.getAttribute("data-side") || "bottom";
+      gsap.set(element, { opacity: 0, scale: 0.95 });
+      animatePopover(element, true, side);
+    }
+    return () => observer.disconnect();
+  }, [combinedRef]);
   return /* @__PURE__ */ jsx(
     TooltipPrimitive.Content,
     __spreadValues({
-      ref,
+      ref: combinedRef,
       sideOffset,
       style: colorStyles,
       className: cn(
-        "z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-lg animate-in fade-in-0 zoom-in-95 duration-200 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-tooltip-content-transform-origin]",
+        "z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-lg origin-[--radix-tooltip-content-transform-origin]",
         className
       )
     }, props)
@@ -3112,12 +3474,34 @@ var DropdownMenuSubTrigger = React20.forwardRef((_a, ref) => {
 DropdownMenuSubTrigger.displayName = DropdownMenuPrimitive.SubTrigger.displayName;
 var DropdownMenuSubContent = React20.forwardRef((_a, ref) => {
   var _b = _a, { className } = _b, props = __objRest(_b, ["className"]);
+  const contentRef = useRef(null);
+  const combinedRef = ref || contentRef;
+  useEffect(() => {
+    const element = combinedRef.current;
+    if (!element) return;
+    const observer = new MutationObserver(() => {
+      const isOpen2 = element.getAttribute("data-state") === "open";
+      const side = element.getAttribute("data-side") || "bottom";
+      animatePopover(element, isOpen2, side);
+    });
+    observer.observe(element, {
+      attributes: true,
+      attributeFilter: ["data-state", "data-side"]
+    });
+    const isOpen = element.getAttribute("data-state") === "open";
+    if (isOpen) {
+      const side = element.getAttribute("data-side") || "bottom";
+      gsap.set(element, { opacity: 0, scale: 0.95 });
+      animatePopover(element, true, side);
+    }
+    return () => observer.disconnect();
+  }, [combinedRef]);
   return /* @__PURE__ */ jsx(
     DropdownMenuPrimitive.SubContent,
     __spreadValues({
-      ref,
+      ref: combinedRef,
       className: cn(
-        "z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-lg data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-dropdown-menu-content-transform-origin]",
+        "z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-lg origin-[--radix-dropdown-menu-content-transform-origin]",
         className
       )
     }, props)
@@ -3126,6 +3510,8 @@ var DropdownMenuSubContent = React20.forwardRef((_a, ref) => {
 DropdownMenuSubContent.displayName = DropdownMenuPrimitive.SubContent.displayName;
 var DropdownMenuContent = React20.forwardRef((_a, ref) => {
   var _b = _a, { className, sideOffset = 4, customColor, customBorderColor } = _b, props = __objRest(_b, ["className", "sideOffset", "customColor", "customBorderColor"]);
+  const contentRef = useRef(null);
+  const combinedRef = ref || contentRef;
   const colorStyles = React20.useMemo(() => {
     const styles = {};
     if (customColor) {
@@ -3136,14 +3522,34 @@ var DropdownMenuContent = React20.forwardRef((_a, ref) => {
     }
     return styles;
   }, [customColor, customBorderColor]);
+  useEffect(() => {
+    const element = combinedRef.current;
+    if (!element) return;
+    const observer = new MutationObserver(() => {
+      const isOpen2 = element.getAttribute("data-state") === "open";
+      const side = element.getAttribute("data-side") || "bottom";
+      animatePopover(element, isOpen2, side);
+    });
+    observer.observe(element, {
+      attributes: true,
+      attributeFilter: ["data-state", "data-side"]
+    });
+    const isOpen = element.getAttribute("data-state") === "open";
+    if (isOpen) {
+      const side = element.getAttribute("data-side") || "bottom";
+      gsap.set(element, { opacity: 0, scale: 0.95 });
+      animatePopover(element, true, side);
+    }
+    return () => observer.disconnect();
+  }, [combinedRef]);
   return /* @__PURE__ */ jsx(DropdownMenuPrimitive.Portal, { children: /* @__PURE__ */ jsx(
     DropdownMenuPrimitive.Content,
     __spreadValues({
-      ref,
+      ref: combinedRef,
       sideOffset,
       style: colorStyles,
       className: cn(
-        "z-50 max-h-[var(--radix-dropdown-menu-content-available-height)] min-w-[8rem] overflow-y-auto overflow-x-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-dropdown-menu-content-transform-origin]",
+        "z-50 max-h-[var(--radix-dropdown-menu-content-available-height)] min-w-[8rem] overflow-y-auto overflow-x-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-lg origin-[--radix-dropdown-menu-content-transform-origin]",
         className
       )
     }, props)
@@ -3173,6 +3579,30 @@ var DropdownMenuItem = React20.forwardRef((_a, ref) => {
   );
 });
 DropdownMenuItem.displayName = DropdownMenuPrimitive.Item.displayName;
+var CheckIndicator2 = () => {
+  const checkRef = useRef(null);
+  useEffect(() => {
+    const element = checkRef.current;
+    if (!element) return;
+    const parent = element.closest("[data-state]");
+    if (!parent) return;
+    const observer = new MutationObserver(() => {
+      const isVisible2 = parent.getAttribute("data-state") === "checked";
+      animateCheck(element, isVisible2);
+    });
+    observer.observe(parent, {
+      attributes: true,
+      attributeFilter: ["data-state"]
+    });
+    const isVisible = parent.getAttribute("data-state") === "checked";
+    if (isVisible) {
+      gsap.set(element, { opacity: 0, scale: 0.8 });
+      animateCheck(element, true);
+    }
+    return () => observer.disconnect();
+  }, []);
+  return /* @__PURE__ */ jsx(Check, { ref: checkRef, className: "h-4 w-4" });
+};
 var DropdownMenuCheckboxItem = React20.forwardRef((_a, ref) => {
   var _b = _a, { className, children, checked } = _b, props = __objRest(_b, ["className", "children", "checked"]);
   return /* @__PURE__ */ jsxs(
@@ -3186,7 +3616,7 @@ var DropdownMenuCheckboxItem = React20.forwardRef((_a, ref) => {
       checked
     }, props), {
       children: [
-        /* @__PURE__ */ jsx("span", { className: "absolute left-2 flex h-3.5 w-3.5 items-center justify-center", children: /* @__PURE__ */ jsx(DropdownMenuPrimitive.ItemIndicator, { children: /* @__PURE__ */ jsx(Check, { className: "h-4 w-4 animate-in fade-in-0 zoom-in-95" }) }) }),
+        /* @__PURE__ */ jsx("span", { className: "absolute left-2 flex h-3.5 w-3.5 items-center justify-center", children: /* @__PURE__ */ jsx(DropdownMenuPrimitive.ItemIndicator, { children: /* @__PURE__ */ jsx(CheckIndicator2, {}) }) }),
         children
       ]
     })

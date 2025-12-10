@@ -1,40 +1,46 @@
-# Burnify Frontend
+# vyse-ui
 
-Frontend do projeto Burnify construído com Next.js, React e TypeScript, utilizando uma biblioteca completa de componentes UI customizáveis.
+> Uma biblioteca completa de componentes React moderna, acessível e construída com as melhores práticas da indústria.
 
-## 🚀 Tecnologias
+[![npm version](https://img.shields.io/npm/v/vyse-ui.svg)](https://www.npmjs.com/package/vyse-ui)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-- **Next.js 15** - Framework React para produção
-- **React 19** - Biblioteca JavaScript para interfaces
-- **TypeScript** - Tipagem estática
-- **Tailwind CSS** - Framework CSS utility-first
-- **Radix UI** - Componentes headless acessíveis
-- **Storybook** - Desenvolvimento e documentação de componentes
-- **class-variance-authority** - Gerenciamento de variantes de componentes
+## 📚 Documentação
 
-## 📦 Instalação
+**Documentação completa:** [https://new-components-lib.vercel.app/](https://new-components-lib.vercel.app/)
+
+## 🚀 Instalação
 
 ```bash
-# Instalar dependências
-pnpm install
-
-# Executar servidor de desenvolvimento
-pnpm dev
-
-# Executar Storybook
-pnpm storybook
-
-# Build para produção
-pnpm build
+npm install vyse-ui
+# ou
+pnpm add vyse-ui
+# ou
+yarn add vyse-ui
 ```
 
-## 🎨 Componentes UI
+## 📦 Importação
 
-Este projeto inclui uma biblioteca completa de componentes UI profissionais e customizáveis. Todos os componentes suportam cores personalizadas através da prop `customColor` (padrão: `#2c09b9`).
+```tsx
+// Importar componentes
+import { Button, Input, Card, Dialog } from 'vyse-ui'
 
-### Componentes Disponíveis
+// Importar estilos (necessário)
+import 'vyse-ui/styles'
+```
 
-#### Formulários
+## ✨ Características
+
+- 🎨 **Moderno & Acessível** - Construído com Radix UI, seguindo as melhores práticas de acessibilidade WCAG
+- 📘 **TypeScript First** - Tipagem completa e IntelliSense para uma experiência de desenvolvimento superior
+- 🎭 **Customizável** - Fácil de personalizar com Tailwind CSS e variantes usando CVA
+- ⚡ **Performance** - Otimizado para performance com tree-shaking e bundle size reduzido
+- ✅ **Bem Testado** - Componentes testados e validados para garantir qualidade e confiabilidade
+- 🌐 **Open Source** - Código aberto, mantido com cuidado e aberto para contribuições da comunidade
+
+## 🎨 Componentes Disponíveis
+
+### Formulários
 - **Button** - Botões com variantes (default, destructive, outline, secondary, ghost, link, success)
 - **Input** - Campo de entrada com suporte a ícones e estados de erro
 - **Textarea** - Área de texto com redimensionamento
@@ -44,45 +50,73 @@ Este projeto inclui uma biblioteca completa de componentes UI profissionais e cu
 - **DatePicker** - Seletor de data com calendário
 - **DateInput** - Input de data com calendário integrado
 - **DateRangePicker** - Seletor de intervalo de datas
+- **FileUpload** - Upload de arquivos com preview
+- **FormField** - Campo de formulário com label e mensagens de erro
 
-#### Navegação
+### Navegação
 - **Breadcrumb** - Navegação hierárquica com cores customizáveis
 - **Pagination** - Paginação com suporte a múltiplos idiomas
 - **Tabs** - Abas com conteúdo organizado
+- **Sidebar** - Barra lateral navegável
+- **CommandPalette** - Paleta de comandos para navegação rápida
 
-#### Feedback
+### Feedback
 - **Progress** - Barra de progresso linear
 - **CircularProgress** - Indicador de progresso circular
 - **Spinner** - Indicador de carregamento
 - **Skeleton** - Placeholder de conteúdo
 - **Badge** - Etiquetas com múltiplas variantes
-- **Alert** - Alertas e notificações
+- **Rating** - Sistema de avaliação com estrelas
 
-#### Overlay
+### Overlay
 - **Dialog** - Modal dialog
 - **Drawer** - Drawer lateral
 - **Popover** - Popover flutuante
 - **Tooltip** - Dica de ferramenta
 - **DropdownMenu** - Menu dropdown
+- **Modal** - Modal customizável
 
-#### Dados
-- **Table** - Tabela de dados
+### Dados
 - **Card** - Card com hover e interatividade
 - **Calendar** - Calendário completo com seleção de datas
 - **Avatar** - Avatar de usuário
+- **Carousel** - Carrossel de imagens/conteúdo
+- **Table** - Tabela de dados (via Radix UI)
 
-#### Outros
+### Outros
+- **Accordion** - Acordeão expansível
 - **Divider** - Divisor visual
 - **Snippet** - Bloco de código
 - **KeyboardKey** - Tecla de teclado
 - **ScrollShadow** - Sombra de rolagem
 - **Sonner** - Sistema de notificações toast
+- **RichTextEditor** - Editor de texto rico
+- **ColorPicker** - Seletor de cores
+- **IconButton** - Botão com ícone
+
+## 💻 Uso Básico
+
+```tsx
+import { Button, Input, Card } from 'vyse-ui'
+import 'vyse-ui/styles'
+
+function App() {
+  return (
+    <div>
+      <Button variant="default">Clique aqui</Button>
+      <Input placeholder="Digite algo..." />
+      <Card>
+        <h2>Título do Card</h2>
+        <p>Conteúdo do card</p>
+      </Card>
+    </div>
+  )
+}
+```
 
 ## 🎨 Customização de Cores
 
 Todos os componentes suportam personalização de cores através de props específicas:
-
-### Exemplos
 
 ```tsx
 // Button com cor customizada
@@ -102,12 +136,6 @@ Todos os componentes suportam personalização de cores através de props espec�
   customBorderColor="#e5e7eb"
 />
 
-// Calendar com cores primárias e de destaque
-<Calendar 
-  primaryColor="#2c09b9"
-  accentColor="#6366f1"
-/>
-
 // Badge com cor customizada
 <Badge customColor="#8b5cf6">
   Novo
@@ -118,135 +146,50 @@ Todos os componentes suportam personalização de cores através de props espec�
 
 Todos os componentes têm a cor padrão `#2c09b9` aplicada quando `customColor` não é especificado.
 
-### Cálculo Automático de Contraste
+## 🛠️ Tecnologias
 
-Os componentes calculam automaticamente a cor do texto baseado na cor de fundo para garantir legibilidade:
+- **React 19** - Biblioteca JavaScript para interfaces
+- **TypeScript** - Tipagem estática
+- **Tailwind CSS** - Framework CSS utility-first
+- **Radix UI** - Componentes headless acessíveis
+- **class-variance-authority** - Gerenciamento de variantes de componentes
 
-- Cores claras → Texto preto/escuro
-- Cores escuras → Texto branco
+## 📋 Requisitos
 
-## 📚 Storybook
+- React 18+ ou 19+
+- React DOM 18+ ou 19+
 
-O projeto inclui Storybook para desenvolvimento e documentação de componentes:
+## 📖 Documentação Completa
 
-```bash
-pnpm storybook
-```
+Para exemplos detalhados, props, variantes e guias de uso, visite nossa documentação:
 
-Acesse `http://localhost:6006` para visualizar todos os componentes e suas variantes.
-
-### Controles Interativos
-
-Todos os stories incluem controles interativos para:
-- Alterar cores customizadas em tempo real
-- Testar diferentes variantes
-- Ajustar tamanhos e propriedades
-- Visualizar estados (hover, focus, disabled, etc.)
-
-## 🎯 Características Principais
-
-### ✨ Design Profissional
-- Layout moderno e limpo
-- Animações suaves e transições refinadas
-- Sombras e bordas elegantes
-- Hierarquia visual clara
-
-### ♿ Acessibilidade
-- Componentes baseados em Radix UI
-- Suporte completo a teclado
-- ARIA labels e roles apropriados
-- Contraste de cores WCAG-compliant
-
-### 🎨 Customização
-- Cores personalizáveis em todos os componentes
-- Variantes flexíveis
-- Tamanhos configuráveis
-- Suporte a temas claro/escuro
-
-### 📱 Responsivo
-- Design mobile-first
-- Componentes adaptáveis
-- Breakpoints otimizados
-
-## 📁 Estrutura do Projeto
-
-```
-burnify-front/
-├── app/                    # App Router do Next.js
-├── components/
-│   └── ui/                 # Componentes UI
-├── lib/
-│   └── utils.ts           # Utilitários (cn, getContrastTextColor, etc.)
-├── stories/
-│   └── ui/                # Stories do Storybook
-└── public/                # Arquivos estáticos
-```
-
-## 🛠️ Utilitários
-
-### `cn()`
-Função helper para combinar classes Tailwind CSS:
-
-```tsx
-import { cn } from "@/lib/utils"
-
-<div className={cn("base-class", condition && "conditional-class")} />
-```
-
-### `getContrastTextColor()`
-Calcula a cor do texto ideal baseado na cor de fundo:
-
-```tsx
-import { getContrastTextColor } from "@/lib/utils"
-
-const textColor = getContrastTextColor("#3b82f6") // Retorna "#ffffff" ou "#000000"
-```
-
-## 🚀 Scripts Disponíveis
-
-```bash
-# Desenvolvimento
-pnpm dev              # Inicia servidor de desenvolvimento
-pnpm build            # Build para produção
-pnpm start            # Inicia servidor de produção
-
-# Storybook
-pnpm storybook        # Inicia Storybook
-pnpm build-storybook  # Build do Storybook
-
-# Qualidade de Código
-pnpm lint             # Executa ESLint
-pnpm type-check       # Verifica tipos TypeScript
-```
-
-## 📝 Convenções
-
-### Variantes Padrão
-- Todos os componentes com variantes usam `variant="default"` como padrão
-- Tamanhos padrão são `size="default"` quando aplicável
-
-### Cores Customizadas
-- Prop padrão: `customColor` (quando aplicável)
-- Cores específicas: `customBorderColor`, `customFocusColor`, `customBgColor`, etc.
-- Cor padrão do sistema: `#2c09b9`
+**[https://new-components-lib.vercel.app/](https://new-components-lib.vercel.app/)**
 
 ## 🤝 Contribuindo
 
-1. Crie uma branch para sua feature
-2. Faça suas alterações
-3. Adicione stories no Storybook se necessário
-4. Teste em diferentes tamanhos de tela
-5. Certifique-se de que a acessibilidade está mantida
-6. Abra um Pull Request
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests.
+
+1. Faça um fork do projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
 
 ## 📄 Licença
 
-Este projeto é privado e proprietário.
+Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
+
+## 👤 Autor
+
+**Obertan**
+
+- Email: obertanbarcellos@gmail.com
+- GitHub: [@obertanbarcellos](https://github.com/obertanbarcellos)
 
 ## 🔗 Links Úteis
 
-- [Next.js Documentation](https://nextjs.org/docs)
-- [React Documentation](https://react.dev)
-- [Tailwind CSS](https://tailwindcss.com)
+- [Documentação](https://new-components-lib.vercel.app/)
+- [Repositório GitHub](https://github.com/obertanbarcellos/new-components-lib)
+- [NPM Package](https://www.npmjs.com/package/vyse-ui)
 - [Radix UI](https://www.radix-ui.com)
-- [Storybook](https://storybook.js.org)
+- [Tailwind CSS](https://tailwindcss.com)

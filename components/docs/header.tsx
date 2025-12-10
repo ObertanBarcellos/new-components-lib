@@ -14,7 +14,7 @@ import { useTranslations } from "@/hooks/use-translations"
 import { LanguageSwitcher } from "./language-switcher"
 
 // Versão da biblioteca
-const VERSION = "1.2.1"
+const VERSION = "1.2.2"
 
 interface HeaderProps {
   className?: string
