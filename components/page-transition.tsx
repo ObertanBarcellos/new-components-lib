@@ -66,7 +66,7 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
       tl.call(() => {
         setDisplayChildren(children)
         previousPathnameRef.current = pathname
-      }, null, "-=0.05")
+      }, undefined, "-=0.05")
 
       // Fase 2: Nova página entra com flip suave (350-750ms)
       tl.fromTo(
