@@ -104,7 +104,7 @@ export function DocsHomeContent({ components, categories }: DocsHomeContentProps
   }, [])
 
   return (
-    <div ref={containerRef} className="space-y-16">
+    <div ref={containerRef} className="space-y-16 overflow-hidden">
       {/* Header Section */}
       <div className="space-y-4">
         <h1 ref={titleRef} className="text-4xl md:text-5xl font-bold tracking-tight bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent">

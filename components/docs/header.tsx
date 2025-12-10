@@ -13,6 +13,9 @@ import { ComponentMetadata } from "@/lib/docs/components"
 import { useTranslations } from "@/hooks/use-translations"
 import { LanguageSwitcher } from "./language-switcher"
 
+// Versão da biblioteca
+const VERSION = "1.2.1"
+
 interface HeaderProps {
   className?: string
 }
@@ -142,7 +145,7 @@ export function Header({ className }: HeaderProps) {
           )}
           {translationsMounted && (
             <span className="text-sm text-muted-foreground">
-              {t("common.version")} 1.2.0
+              {t("common.version")} {VERSION}
             </span>
           )}
         </div>

@@ -36,36 +36,57 @@ export function CreditsContent() {
       }
 
       // Animar seções de categorias
-      categories.forEach((category) => {
+      categories.forEach((category, index) => {
         const sectionRef = containerRef.current?.querySelector(
           `[data-category="${category}"]`
         ) as HTMLElement
         if (sectionRef) {
-          revealOnScroll(sectionRef, "up")
-
           // Animar cards dentro de cada seção
           const cardsRef = sectionRef.querySelectorAll("[data-credit-card]")
+          
           if (cardsRef && cardsRef.length > 0) {
-            gsap.fromTo(
-              cardsRef,
-              {
-                opacity: 0,
-                y: 30,
-              },
-              {
-                opacity: 1,
-                y: 0,
-                duration: 0.6,
-                stagger: 0.05,
-                ease: "power3.out",
-                scrollTrigger: {
-                  trigger: sectionRef,
-                  start: "top 80%",
-                  end: "bottom 20%",
-                  toggleActions: "play none none reverse",
+            // Primeira categoria: aparece imediatamente ao carregar
+            if (index === 0) {
+              gsap.fromTo(
+                cardsRef,
+                {
+                  opacity: 0,
+                  y: 30,
                 },
-              }
-            )
+                {
+                  opacity: 1,
+                  y: 0,
+                  duration: 0.6,
+                  delay: 0.6, // Delay após título e descrição
+                  stagger: 0.05,
+                  ease: "power3.out",
+                }
+              )
+            } else {
+              // Demais categorias: aparecem apenas no scroll
+              revealOnScroll(sectionRef, "up")
+              
+              gsap.fromTo(
+                cardsRef,
+                {
+                  opacity: 0,
+                  y: 30,
+                },
+                {
+                  opacity: 1,
+                  y: 0,
+                  duration: 0.6,
+                  stagger: 0.05,
+                  ease: "power3.out",
+                  scrollTrigger: {
+                    trigger: sectionRef,
+                    start: "top 80%",
+                    end: "bottom 20%",
+                    toggleActions: "play none none reverse",
+                  },
+                }
+              )
+            }
           }
         }
       })
