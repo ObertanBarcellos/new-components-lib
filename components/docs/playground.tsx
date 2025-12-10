@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ColorPicker } from "@/components/ui/color-picker"
 import { CodeBlock } from "./code-block"
 import { ComponentPreview } from "./component-preview"
 import { cn } from "@/lib/utils"
@@ -53,6 +54,39 @@ export function Playground({ component, renderComponent }: PlaygroundProps) {
       .join(" ")
 
     return `<${component.name}${propsString ? ` ${propsString}` : ""} />`
+  }
+
+  const isColorProp = (prop: PropDefinition): boolean => {
+    // Verifica se o nome da prop contém palavras-chave relacionadas a cor
+    const colorKeywords = [
+      "color",
+      "Color",
+      "primaryColor",
+      "accentColor",
+      "customColor",
+      "customBorderColor",
+      "customBgColor",
+      "customTextColor",
+      "customRingColor",
+      "customHoverColor",
+      "customFocusColor",
+      "customCheckedColor",
+      "customUncheckedColor",
+      "customOverlayColor",
+      "filledColor",
+      "emptyColor",
+    ]
+    
+    const nameContainsColor = colorKeywords.some((keyword) =>
+      prop.name.toLowerCase().includes(keyword.toLowerCase())
+    )
+    
+    // Verifica se a descrição menciona cor
+    const descriptionContainsColor = prop.description
+      .toLowerCase()
+      .includes("cor") || prop.description.toLowerCase().includes("color")
+    
+    return nameContainsColor || descriptionContainsColor
   }
 
   const renderPropControl = (prop: PropDefinition) => {
@@ -106,6 +140,52 @@ export function Playground({ component, renderComponent }: PlaygroundProps) {
     }
 
     if (prop.type.includes("string") || prop.type.includes("number")) {
+      // Verifica se é uma prop de cor
+      if (prop.type.includes("string") && isColorProp(prop)) {
+        // Usa o valor do estado ou o valor padrão, mas não aplica fallback no estado
+        // O fallback #000000 é apenas para exibição no ColorPicker
+        const currentValue = props[prop.name]
+        const defaultValue = prop.default?.replace(/'/g, "")
+        const displayValue = currentValue ?? defaultValue ?? "#000000"
+        
+        return (
+          <div key={prop.name} className="space-y-2">
+            <label htmlFor={prop.name} className="text-sm font-medium block">
+              {prop.name}
+            </label>
+            <div className="flex items-center gap-2">
+              <ColorPicker
+                value={displayValue}
+                onChange={(color) => {
+                  // Sempre atualiza o estado quando a cor muda, garantindo que seja aplicada no preview
+                  updateProp(prop.name, color)
+                }}
+                format="hex"
+                size="md"
+              />
+              <Input
+                id={prop.name}
+                type="text"
+                value={displayValue}
+                onChange={(e) => {
+                  const val = e.target.value.trim()
+                  if (val) {
+                    // Atualiza o estado com o valor digitado, aplicando no preview
+                    updateProp(prop.name, val)
+                  } else {
+                    // Remove a prop se o campo estiver vazio
+                    removeProp(prop.name)
+                  }
+                }}
+                placeholder="#000000"
+                className="flex-1"
+              />
+            </div>
+          </div>
+        )
+      }
+      
+      // Props de string/number que não são cores
       return (
         <div key={prop.name} className="space-y-2">
           <label htmlFor={prop.name} className="text-sm font-medium block">
