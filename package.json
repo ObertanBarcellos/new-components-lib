@@ -1,6 +1,6 @@
 {
   "name": "vyse-ui",
-  "version": "1.2.3",
+  "version": "1.2.2",
   "description": "A comprehensive React component library built with Radix UI, Tailwind CSS, and TypeScript",
   "author": "Obertan <obertanbarcellos@gmail.com>",
   "repository": {

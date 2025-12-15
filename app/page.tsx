@@ -1,6 +1,7 @@
 "use client"
 
 import { HeroSection } from "@/components/home/hero-section"
+import { GettingStartedSection } from "@/components/home/getting-started-section"
 import { FeaturesSection } from "@/components/home/features-section"
 import { ComponentsShowcase } from "@/components/home/components-showcase"
 import { StatsSection } from "@/components/home/stats-section"
@@ -25,6 +26,7 @@ export default function Home() {
       </header>
       
       <HeroSection />
+      <GettingStartedSection />
       <FeaturesSection />
       <ComponentsShowcase />
       <StatsSection />

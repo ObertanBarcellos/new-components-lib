@@ -11,23 +11,39 @@
 
 ## 🚀 Instalação
 
+Escolha o gerenciador de pacotes de sua preferência:
+
+**npm**
 ```bash
 npm install vyse-ui
-# ou
+```
+
+**pnpm**
+```bash
 pnpm add vyse-ui
-# ou
+```
+
+**yarn**
+```bash
 yarn add vyse-ui
 ```
 
 ## 📦 Importação
 
-```tsx
-// Importar componentes
-import { Button, Input, Card, Dialog } from 'vyse-ui'
+### Importar Componentes
 
-// Importar estilos (necessário)
+```tsx
+import { Button, Input, Card, Dialog } from 'vyse-ui'
+```
+
+### Importar Estilos (Necessário)
+
+```tsx
+// Importar estilos CSS (obrigatório)
 import 'vyse-ui/styles'
 ```
+
+> **Importante:** Não esqueça de importar os estilos CSS para que os componentes sejam exibidos corretamente!
 
 ## ✨ Características
 

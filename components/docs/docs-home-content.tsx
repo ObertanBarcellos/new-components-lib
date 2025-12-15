@@ -6,7 +6,9 @@ import { gsap } from "gsap"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { ArrowRight, Rocket, Code, Package } from "lucide-react"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { CodeBlock } from "@/components/docs/code-block"
+import { ArrowRight, Rocket, Code, Package, FileText } from "lucide-react"
 import { useTranslations } from "@/hooks/use-translations"
 import { getComponentsByCategory } from "@/lib/docs/components"
 import type { ComponentMetadata } from "@/lib/docs/components"
@@ -132,31 +134,68 @@ export function DocsHomeContent({ components, categories }: DocsHomeContentProps
               {t("home.gettingStartedDescription")}
             </CardDescription>
           </CardHeader>
-          <CardContent className="relative z-10 space-y-4">
-            <div className="grid gap-4 md:grid-cols-2">
-              <div className="rounded-lg bg-muted/50 dark:bg-muted/30 border p-4 font-mono text-sm backdrop-blur-sm">
-                <div className="flex items-center gap-2 text-muted-foreground mb-2">
-                  <Package className="w-4 h-4" />
-                  <span>{t("common.installDependencies")}</span>
-                </div>
-                <div className="text-foreground font-semibold">pnpm install</div>
+          <CardContent className="relative z-10 space-y-6">
+            {/* Instalação */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Package className="w-4 h-4" />
+                <span className="text-sm font-medium">{t("common.installDependencies")}</span>
               </div>
-              <div className="rounded-lg bg-muted/50 dark:bg-muted/30 border p-4 font-mono text-sm backdrop-blur-sm">
-                <div className="flex items-center gap-2 text-muted-foreground mb-2">
-                  <Code className="w-4 h-4" />
-                  <span>{t("common.importComponent")}</span>
-                </div>
-                <div className="text-foreground font-semibold">
-                  import {"{"} Button {"}"} from &quot;@/components/ui/button&quot;
-                </div>
+              <Tabs defaultValue="npm" className="w-full">
+                <TabsList className="grid w-full grid-cols-3">
+                  <TabsTrigger value="npm">npm</TabsTrigger>
+                  <TabsTrigger value="pnpm">pnpm</TabsTrigger>
+                  <TabsTrigger value="yarn">yarn</TabsTrigger>
+                </TabsList>
+                <TabsContent value="npm" className="mt-4">
+                  <CodeBlock code="npm install vyse-ui" language="bash" />
+                </TabsContent>
+                <TabsContent value="pnpm" className="mt-4">
+                  <CodeBlock code="pnpm add vyse-ui" language="bash" />
+                </TabsContent>
+                <TabsContent value="yarn" className="mt-4">
+                  <CodeBlock code="yarn add vyse-ui" language="bash" />
+                </TabsContent>
+              </Tabs>
+            </div>
+            
+            {/* Importar Componentes */}
+            <div className="space-y-4 pt-6 border-t border-border/50">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Code className="w-4 h-4" />
+                <span className="text-sm font-medium">{t("common.importComponent")}</span>
+              </div>
+              <CodeBlock 
+                code={`import { Button } from 'vyse-ui'`}
+                language="tsx"
+              />
+            </div>
+
+            {/* Importar Estilos */}
+            <div className="space-y-4 pt-6 border-t border-border/50">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <FileText className="w-4 h-4" />
+                <span className="text-sm font-medium">{t("common.importStyles")}</span>
+              </div>
+              <CodeBlock 
+                code={`import 'vyse-ui/styles'`}
+                language="tsx"
+              />
+              <div className="rounded-lg bg-muted/50 dark:bg-muted/30 border border-border/50 p-3">
+                <p className="text-sm text-muted-foreground">
+                  ⚠️ <strong className="text-foreground">{t("common.important")}:</strong> {t("common.importStylesNote")}
+                </p>
               </div>
             </div>
-            <Link href="/docs/button">
-              <Button size="lg" className="w-full sm:w-auto">
-                {t("common.viewDocumentation")}
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
+            
+            <div className="pt-4">
+              <Link href="/docs/button">
+                <Button size="lg" className="w-full sm:w-auto">
+                  {t("common.viewDocumentation")}
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
           </CardContent>
         </Card>
       </div>
